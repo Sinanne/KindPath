@@ -1,0 +1,29 @@
+{
+  "name": "kindpath",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "homepage": "https://Sinanne.github.io/KindPath/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "framer-motion": "^11.2.10",
+    "lucide-react": "^0.395.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "use-sound": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "gh-pages": "^6.3.0",
+    "vite": "^5.3.1"
+  }
+}
