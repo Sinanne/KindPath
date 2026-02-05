@@ -14,6 +14,13 @@ const ScienceExplorer = () => {
     const [quizFinished, setQuizFinished] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(0.8);
     const [time, setTime] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const [playCorrect] = useSound(SOUND_URLS.correct);
     const [playWrong] = useSound(SOUND_URLS.wrong);
@@ -95,47 +102,69 @@ const ScienceExplorer = () => {
 
     return (
         <div className="container" style={{ padding: '40px 20px', minHeight: '100vh', background: colorScheme.bgSubtle }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => navigate('/')}
                         className="btn"
-                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px' }}
+                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
                     >
                         <ArrowLeft size={20} />
                     </motion.button>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '10px',
                         background: 'white',
-                        padding: '8px 20px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
-                        boxShadow: '0 8px 0 #E2E8F0',
+                        boxShadow: '0-8px-0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}>
-                        <div style={{ background: colorScheme.primary, padding: '8px', borderRadius: '12px' }}>
-                            <Rocket size={24} color="white" />
+                        <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
+                            <Rocket size={20} color="white" />
                         </div>
-                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B' }}>Science Explorer</h2>
+                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-lg)' }}>Science Explorer</h2>
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '20px' }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <motion.button
+                        whileTap={{ y: 4, boxShadow: 'none' }}
+                        onClick={() => navigate('/science/game')}
+                        style={{
+                            background: '#F59E0B',
+                            color: 'white',
+                            padding: '10px 16px',
+                            border: 'none',
+                            borderRadius: '16px',
+                            fontFamily: 'Fredoka',
+                            fontWeight: 'bold',
+                            boxShadow: '0 6px 0 #D97706',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            fontSize: '14px'
+                        }}
+                    >
+                        <Rocket size={18} fill="white" /> GAME
+                    </motion.button>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => { setShowQuiz(false); setQuizFinished(false); }}
                         style={{
                             background: !showQuiz ? colorScheme.primary : 'white',
                             color: !showQuiz ? 'white' : '#64748B',
-                            padding: '12px 24px',
+                            padding: '10px 16px',
                             border: 'none',
                             borderRadius: '16px',
                             fontFamily: 'Fredoka',
                             fontWeight: 'bold',
                             boxShadow: !showQuiz ? `0 6px 0 ${colorScheme.accent}` : '0 6px 0 #E2E8F0',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            fontSize: '14px'
                         }}
                     >
                         Explore
@@ -146,13 +175,14 @@ const ScienceExplorer = () => {
                         style={{
                             background: showQuiz ? colorScheme.primary : 'white',
                             color: showQuiz ? 'white' : '#64748B',
-                            padding: '12px 24px',
+                            padding: '10px 16px',
                             border: 'none',
                             borderRadius: '16px',
                             fontFamily: 'Fredoka',
                             fontWeight: 'bold',
                             boxShadow: showQuiz ? `0 6px 0 ${colorScheme.accent}` : '0 6px 0 #E2E8F0',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            fontSize: '14px'
                         }}
                     >
                         Quiz
@@ -161,45 +191,45 @@ const ScienceExplorer = () => {
             </header>
 
             {!showQuiz ? (
-                <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: '30px', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch' }}>
                     {/* Mission Mode Sidebar */}
-                    <div style={{ width: '250px', background: 'white', padding: '24px', borderRadius: '32px', boxShadow: '0 10px 0 #E2E8F0', border: '2px solid #F8FAFC' }}>
-                        <h4 style={{ marginBottom: '20px', color: '#94A3B8', fontFamily: 'Fredoka' }}>QUICK TRAVEL</h4>
-                        {planets.map(p => (
-                            <motion.button
-                                key={p.name}
-                                whileHover={{ x: 5 }}
-                                whileTap={{ x: 0 }}
-                                onClick={() => { setSelectedPlanetId(p.id); if (!selectedPlanetId) setZoomLevel(1.5); }}
-                                style={{
-                                    width: '100%',
-                                    textAlign: 'left',
-                                    padding: '12px',
-                                    background: selectedPlanetId === p.id ? colorScheme.bgSubtle : 'transparent',
-                                    border: 'none',
-                                    borderRadius: '16px',
-                                    color: '#1E293B',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '12px',
-                                    marginBottom: '5px',
-                                    fontFamily: 'Fredoka',
-                                    fontWeight: 'bold',
-                                    transition: 'background 0.2s'
-                                }}
-                            >
-                                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: p.color, boxShadow: `0 0 10px ${p.color}` }}></div>
-                                {p.name}
-                                {selectedPlanetId === p.id && <MapPin size={14} style={{ marginLeft: 'auto', color: colorScheme.primary }} />}
-                            </motion.button>
-                        ))}
+                    <div style={{ width: isMobile ? '100%' : '250px', background: 'white', padding: '20px', borderRadius: '32px', boxShadow: '0 10px 0 #E2E8F0', border: '2px solid #F8FAFC' }}>
+                        <h4 style={{ marginBottom: '15px', color: '#94A3B8', fontFamily: 'Fredoka', fontSize: '12px' }}>QUICK TRAVEL</h4>
+                        <div style={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', gap: '8px', overflowX: 'auto', paddingBottom: '10px' }}>
+                            {planets.map(p => (
+                                <motion.button
+                                    key={p.name}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() => { setSelectedPlanetId(p.id); if (!selectedPlanetId) setZoomLevel(1.5); }}
+                                    style={{
+                                        minWidth: isMobile ? '100px' : 'auto',
+                                        textAlign: 'left',
+                                        padding: '10px',
+                                        background: selectedPlanetId === p.id ? colorScheme.bgSubtle : 'transparent',
+                                        border: 'none',
+                                        borderRadius: '12px',
+                                        color: '#1E293B',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        fontFamily: 'Fredoka',
+                                        fontWeight: 'bold',
+                                        fontSize: '14px',
+                                        transition: 'background 0.2s'
+                                    }}
+                                >
+                                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: p.color, boxShadow: `0 0 10px ${p.color}` }}></div>
+                                    {p.name}
+                                </motion.button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Space View */}
                     <div
                         onClick={() => setSelectedPlanetId(null)}
-                        style={{ flex: 1, position: 'relative', height: '650px', background: 'radial-gradient(circle at center, #1E293B 0%, #0F172A 100%)', borderRadius: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', border: '5px solid white', boxShadow: '0 20px 0 #E2E8F0', cursor: 'grab' }}
+                        style={{ flex: 1, position: 'relative', height: isMobile ? '450px' : '650px', background: 'radial-gradient(circle at center, #1E293B 0%, #0F172A 100%)', borderRadius: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', border: '4px solid white', boxShadow: '0 10px 0 #E2E8F0', cursor: 'grab' }}
                     >
                         {/* Zoom Controls */}
                         <div style={{ position: 'absolute', left: '30px', bottom: '30px', display: 'flex', flexDirection: 'column', gap: '15px', zIndex: 20 }}>
@@ -300,20 +330,28 @@ const ScienceExplorer = () => {
                         <AnimatePresence>
                             {selectedPlanet && (
                                 <motion.div
-                                    initial={{ opacity: 0, scale: 0.9, x: 20 }}
-                                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                                    exit={{ opacity: 0, scale: 0.9, x: 20 }}
+                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                     onClick={(e) => e.stopPropagation()}
-                                    style={{ position: 'absolute', right: '30px', top: '30px', width: '320px', background: 'white', color: '#1E293B', padding: '30px', borderRadius: '32px', boxShadow: `0 15px 0 ${colorScheme.primary}`, border: '4px solid #F8FAFC', zIndex: 30 }}
+                                    style={{
+                                        position: 'absolute', right: window.innerWidth < 768 ? '10px' : '30px',
+                                        left: window.innerWidth < 768 ? '10px' : 'auto',
+                                        top: window.innerWidth < 768 ? 'auto' : '30px',
+                                        bottom: window.innerWidth < 768 ? '10px' : 'auto',
+                                        width: window.innerWidth < 768 ? 'calc(100% - 20px)' : '320px',
+                                        background: 'white', color: '#1E293B', padding: '20px', borderRadius: '24px',
+                                        boxShadow: `0 10px 0 ${colorScheme.primary}`, border: '3px solid #F8FAFC', zIndex: 30
+                                    }}
                                 >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                                        <h2 style={{ color: selectedPlanet.color, fontFamily: 'Fredoka', margin: 0, fontSize: '28px' }}>{selectedPlanet.name}</h2>
-                                        <button onClick={() => setSelectedPlanetId(null)} style={{ border: 'none', background: '#F1F5F9', color: '#64748B', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={18} /></button>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                        <h2 style={{ color: selectedPlanet.color, fontFamily: 'Fredoka', margin: 0, fontSize: 'var(--fs-xl)' }}>{selectedPlanet.name}</h2>
+                                        <button onClick={() => setSelectedPlanetId(null)} style={{ border: 'none', background: '#F1F5F9', color: '#64748B', width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={16} /></button>
                                     </div>
-                                    <p style={{ lineHeight: '1.6', marginBottom: '20px', fontFamily: 'Fredoka', color: '#475569', fontSize: '18px' }}>{selectedPlanet.info}</p>
-                                    <div style={{ background: colorScheme.bgSubtle, padding: '20px', borderRadius: '20px', display: 'flex', gap: '15px', border: '2px dashed #E2E8F0' }}>
-                                        <Info size={28} color={colorScheme.primary} />
-                                        <p style={{ fontSize: '15px', fontStyle: 'italic', margin: 0, color: '#334155', fontFamily: 'Fredoka' }}>{selectedPlanet.fact}</p>
+                                    <p style={{ lineHeight: '1.5', marginBottom: '15px', fontFamily: 'Fredoka', color: '#475569', fontSize: 'var(--fs-sm)' }}>{selectedPlanet.info}</p>
+                                    <div style={{ background: colorScheme.bgSubtle, padding: '12px', borderRadius: '15px', display: 'flex', gap: '10px', border: '2px dashed #E2E8F0' }}>
+                                        <Info size={20} color={colorScheme.primary} />
+                                        <p style={{ fontSize: '13px', fontStyle: 'italic', margin: 0, color: '#334155', fontFamily: 'Fredoka' }}>{selectedPlanet.fact}</p>
                                     </div>
                                 </motion.div>
                             )}
@@ -332,26 +370,25 @@ const ScienceExplorer = () => {
                     </div>
                 </div>
             ) : (
-                <div style={{ maxWidth: '700px', margin: '40px auto', textAlign: 'center' }}>
+                <div style={{ maxWidth: '700px', margin: '20px auto', textAlign: 'center', width: '100%' }}>
                     {!quizFinished ? (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            style={{ background: 'white', padding: '50px', borderRadius: '40px', boxShadow: '0 15px 0 #E2E8F0', border: '4px solid #F8FAFC' }}
+                            style={{ background: 'white', padding: isMobile ? '30px 20px' : '50px', borderRadius: '32px', boxShadow: '0 10px 0 #E2E8F0', border: '3px solid #F8FAFC' }}
                         >
-                            <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span style={{ fontWeight: 'bold', color: colorScheme.primary, fontFamily: 'Fredoka', fontSize: '20px' }}>Mission {currentQuestion + 1} of {quizQuestions.length}</span>
-                                <HelpCircle color="#94A3B8" />
+                            <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontWeight: 'bold', color: colorScheme.primary, fontFamily: 'Fredoka', fontSize: '16px' }}>Mission {currentQuestion + 1} of {quizQuestions.length}</span>
+                                <HelpCircle color="#94A3B8" size={20} />
                             </div>
-                            <h2 style={{ marginBottom: '40px', fontFamily: 'Fredoka', color: '#1E293B', fontSize: '32px' }}>{quizQuestions[currentQuestion].q}</h2>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+                            <h2 style={{ marginBottom: '30px', fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-xl)' }}>{quizQuestions[currentQuestion].q}</h2>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
                                 {quizQuestions[currentQuestion].options.map(opt => (
                                     <motion.button
                                         key={opt}
-                                        whileHover={{ y: -5 }}
-                                        whileTap={{ y: 5, boxShadow: 'none' }}
+                                        whileTap={{ scale: 0.98 }}
                                         onClick={() => handleAnswer(opt)}
-                                        style={{ background: 'white', color: '#1E293B', border: '3px solid #F1F5F9', padding: '20px', borderRadius: '24px', fontSize: '20px', fontFamily: 'Fredoka', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 8px 0 #F1F5F9' }}
+                                        style={{ background: 'white', color: '#1E293B', border: '3px solid #F1F5F9', padding: '16px', borderRadius: '20px', fontSize: '16px', fontFamily: 'Fredoka', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 6px 0 #F1F5F9' }}
                                     >
                                         {opt}
                                     </motion.button>
@@ -362,16 +399,16 @@ const ScienceExplorer = () => {
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            style={{ background: 'white', padding: '60px', borderRadius: '40px', boxShadow: '0 15px 0 #E2E8F0', border: '4px solid #F8FAFC' }}
+                            style={{ background: 'white', padding: '40px 20px', borderRadius: '32px', boxShadow: '0 10px 0 #E2E8F0', border: '3px solid #F8FAFC' }}
                         >
-                            <CheckCircle size={80} color="#10B981" style={{ margin: '0 auto 24px' }} />
-                            <h1 style={{ marginBottom: '16px', fontFamily: 'Fredoka', fontSize: '48px', color: '#1E293B' }}>Mission Complete!</h1>
-                            <p style={{ fontSize: '24px', marginBottom: '40px', color: '#64748B', fontFamily: 'Fredoka' }}>Your Score: <span style={{ color: colorScheme.primary, fontWeight: '900' }}>{score} / {quizQuestions.length}</span></p>
+                            <CheckCircle size={60} color="#10B981" style={{ margin: '0 auto 20px' }} />
+                            <h1 style={{ marginBottom: '12px', fontFamily: 'Fredoka', fontSize: 'var(--fs-2xl)', color: '#1E293B' }}>Mission Complete!</h1>
+                            <p style={{ fontSize: 'var(--fs-lg)', marginBottom: '30px', color: '#64748B', fontFamily: 'Fredoka' }}>Your Score: <span style={{ color: colorScheme.primary, fontWeight: '900' }}>{score} / {quizQuestions.length}</span></p>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => { setShowQuiz(false); setQuizFinished(false); setCurrentQuestion(0); setScore(0); }}
-                                style={{ background: colorScheme.primary, color: 'white', border: 'none', padding: '20px 40px', borderRadius: '24px', fontSize: '24px', fontWeight: 'bold', fontFamily: 'Fredoka', boxShadow: `0 8px 0 ${colorScheme.accent}`, cursor: 'pointer' }}
+                                style={{ background: colorScheme.primary, color: 'white', border: 'none', padding: '16px 32px', borderRadius: '20px', fontSize: '20px', fontWeight: 'bold', fontFamily: 'Fredoka', boxShadow: `0 6px 0 ${colorScheme.accent}`, cursor: 'pointer' }}
                             >
                                 Back to Space
                             </motion.button>

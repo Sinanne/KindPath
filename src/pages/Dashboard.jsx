@@ -80,38 +80,38 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="container" style={{ padding: '40px 20px', background: '#FDFCF0', minHeight: '100vh' }}>
-            <header style={{ marginBottom: '50px', textAlign: 'center' }}>
+        <div className="container" style={{ padding: '40px 16px', background: '#FDFCF0', minHeight: '100vh' }}>
+            <header style={{ marginBottom: '40px', textAlign: 'center' }}>
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '15px',
+                        gap: '12px',
                         marginBottom: '20px',
                         background: 'white',
-                        padding: '12px 24px',
+                        padding: '10px 20px',
                         borderRadius: '20px',
                         boxShadow: '0 8px 0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}
                 >
-                    <Rocket color="#3B82F6" size={32} />
-                    <h1 style={{ color: '#1E293B', fontSize: '32px', fontFamily: 'Fredoka', margin: 0 }}>KindPath</h1>
+                    <Rocket color="#3B82F6" size={28} />
+                    <h1 style={{ color: '#1E293B', fontSize: 'var(--fs-lg)', fontFamily: 'Fredoka', margin: 0 }}>KindPath</h1>
                 </motion.div>
 
-                <h1 style={{ fontSize: '48px', color: '#1E293B', fontFamily: 'Fredoka', fontWeight: 'bold' }}>
+                <h1 style={{ fontSize: 'var(--fs-2xl)', color: '#1E293B', fontFamily: 'Fredoka', fontWeight: 'bold', margin: '10px 0' }}>
                     Hi <span style={{ color: '#3B82F6' }}>Explorer!</span>
                 </h1>
-                <p style={{ color: '#64748B', fontSize: '20px', fontWeight: '500' }}>Pick a subject to start your adventure!</p>
+                <p style={{ color: '#64748B', fontSize: 'var(--fs-base)', fontWeight: '500' }}>Pick a subject to start your adventure!</p>
             </header>
 
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '30px',
-                marginBottom: '50px'
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '20px',
+                marginBottom: '40px'
             }}>
                 {subjects.map((subject) => (
                     <motion.div
@@ -122,10 +122,10 @@ const Dashboard = () => {
                         style={{
                             cursor: 'pointer',
                             backgroundColor: subject.color,
-                            borderRadius: '32px',
-                            padding: '30px',
+                            borderRadius: '28px',
+                            padding: '20px',
                             position: 'relative',
-                            boxShadow: `0 12px 0 ${subject.accent}`,
+                            boxShadow: `0 8px 0 ${subject.accent}`,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -135,12 +135,12 @@ const Dashboard = () => {
                     >
                         <div style={{
                             position: 'absolute',
-                            top: '15px',
-                            right: '15px',
+                            top: '12px',
+                            right: '12px',
                             background: 'rgba(0,0,0,0.1)',
-                            padding: '4px 12px',
-                            borderRadius: '12px',
-                            fontSize: '12px',
+                            padding: '3px 10px',
+                            borderRadius: '10px',
+                            fontSize: '10px',
                             color: 'white',
                             fontWeight: 'bold'
                         }}>
@@ -148,22 +148,22 @@ const Dashboard = () => {
                         </div>
 
                         <div style={{
-                            width: '100px',
-                            height: '100px',
+                            width: '70px',
+                            height: '70px',
                             backgroundColor: subject.bgLight,
-                            borderRadius: '24px',
+                            borderRadius: '20px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: '20px'
+                            marginBottom: '15px'
                         }}>
-                            {subject.icon}
+                            {React.cloneElement(subject.icon, { size: 36 })}
                         </div>
 
                         <h2 style={{
                             color: 'white',
-                            fontSize: '28px',
-                            letterSpacing: '2px',
+                            fontSize: 'var(--fs-lg)',
+                            letterSpacing: '1px',
                             margin: 0,
                             fontFamily: 'Fredoka',
                             fontWeight: 'bold'
@@ -183,32 +183,32 @@ const Dashboard = () => {
                 <div style={{
                     background: 'white',
                     borderRadius: '32px',
-                    padding: '30px',
+                    padding: '24px',
                     boxShadow: '0 8px 0 #F1F5F9',
                     border: '2px solid #F8FAFC'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                         <Trophy color="#F59E0B" size={24} />
-                        <h3 style={{ color: '#1E293B', margin: 0, fontSize: '24px' }}>My Stars</h3>
+                        <h3 style={{ color: '#1E293B', margin: 0, fontSize: 'var(--fs-lg)' }}>My Stars</h3>
                     </div>
-                    <div style={{ display: 'flex', gap: '20px', justifyContent: 'space-around' }}>
+                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: '#FFD93D', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #C29100' }}>
-                                <Star fill="black" size={32} />
+                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#FFD93D', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #C29100' }}>
+                                <Star fill="black" size={28} />
                             </div>
-                            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Math Star</span>
+                            <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Math Star</span>
                         </div>
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #1D4ED8' }}>
-                                <Rocket color="white" size={32} />
+                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #1D4ED8' }}>
+                                <Rocket color="white" size={28} />
                             </div>
-                            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Space Ace</span>
+                            <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Space Ace</span>
                         </div>
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '70px', height: '70px', borderRadius: '50%', border: '3px dashed #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
-                                <Star color="#E2E8F0" size={32} />
+                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '3px dashed #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+                                <Star color="#E2E8F0" size={28} />
                             </div>
-                            <span style={{ fontSize: '12px', color: '#94A3B8' }}>Next...</span>
+                            <span style={{ fontSize: '10px', color: '#94A3B8' }}>Next...</span>
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@ const Dashboard = () => {
                 <div style={{
                     background: '#FF8C42',
                     borderRadius: '32px',
-                    padding: '30px',
+                    padding: '24px',
                     color: 'white',
                     position: 'relative',
                     boxShadow: '0 12px 0 #D35400',
@@ -230,16 +230,16 @@ const Dashboard = () => {
                         opacity: 0.2,
                         transform: 'rotate(-15deg)'
                     }}>
-                        <Zap size={140} color="white" />
+                        <Zap size={100} color="white" />
                     </div>
 
                     <div style={{ background: 'rgba(255,255,255,0.2)', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '15px', marginBottom: '16px' }}>
-                        <Zap size={18} />
+                        <Zap size={16} />
                         <span style={{ fontSize: '14px', fontWeight: 'bold' }}>Fun Fact</span>
                     </div>
 
-                    <h3 style={{ fontSize: '28px', marginBottom: '16px', lineHeight: '1.3' }}>Did you know?</h3>
-                    <p style={{ fontSize: '20px', marginBottom: '24px', opacity: 0.9 }}>{fact}</p>
+                    <h3 style={{ fontSize: 'var(--fs-xl)', marginBottom: '12px', lineHeight: '1.2' }}>Did you know?</h3>
+                    <p style={{ fontSize: 'var(--fs-base)', marginBottom: '20px', opacity: 0.9 }}>{fact}</p>
 
                     <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -249,12 +249,14 @@ const Dashboard = () => {
                             background: 'white',
                             color: '#FF8C42',
                             border: 'none',
-                            padding: '12px 24px',
+                            padding: '10px 20px',
                             borderRadius: '16px',
                             fontWeight: 'bold',
-                            fontSize: '16px',
+                            fontSize: '14px',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 0 #E2E8F0'
+                            boxShadow: '0 4px 0 #E2E8F0',
+                            position: 'relative',
+                            zIndex: 5
                         }}
                     >
                         WOW! Next Fact

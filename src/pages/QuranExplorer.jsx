@@ -98,32 +98,54 @@ const QuranExplorer = () => {
 
     return (
         <div className="container" style={{ padding: '40px 20px', minHeight: '100vh', background: colorScheme.bgSubtle }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => selectedSurah ? setSelectedSurah(null) : navigate('/')}
                         className="btn"
-                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px' }}
+                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
                     >
                         <ArrowLeft size={20} />
                     </motion.button>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '10px',
                         background: 'white',
-                        padding: '8px 20px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
                         boxShadow: '0 8px 0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}>
-                        <div style={{ background: colorScheme.primary, padding: '8px', borderRadius: '12px' }}>
-                            <Book size={24} color="white" />
+                        <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
+                            <Book size={20} color="white" />
                         </div>
-                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B' }}>Quran Explorer</h2>
+                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-lg)' }}>Quran Explorer</h2>
                     </div>
                 </div>
+
+                <motion.button
+                    whileTap={{ y: 4, boxShadow: 'none' }}
+                    onClick={() => navigate('/quran/sorter')}
+                    style={{
+                        background: '#6366F1',
+                        color: 'white',
+                        padding: '10px 16px',
+                        border: 'none',
+                        borderRadius: '16px',
+                        fontFamily: 'Fredoka',
+                        fontWeight: 'bold',
+                        boxShadow: '0 6px 0 #4338CA',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '14px'
+                    }}
+                >
+                    <Book size={18} fill="white" /> GAME
+                </motion.button>
             </header>
 
             <AnimatePresence mode="wait">
@@ -133,12 +155,12 @@ const QuranExplorer = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', direction: 'rtl' }}
+                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', direction: 'rtl' }}
                     >
                         {surahs.map((surah) => (
                             <motion.div
                                 key={surah.number}
-                                whileHover={{ y: -10 }}
+                                whileHover={{ y: -5 }}
                                 whileTap={{ y: 0, boxShadow: 'none' }}
                                 onClick={() => setSelectedSurah(surah)}
                                 style={{
@@ -146,30 +168,30 @@ const QuranExplorer = () => {
                                     border: '3px solid #F1F5F9',
                                     background: 'white',
                                     textAlign: 'center',
-                                    padding: '50px 30px',
+                                    padding: '30px 20px',
                                     position: 'relative',
-                                    borderRadius: '40px',
-                                    boxShadow: '0 15px 0 #D1FAE5',
+                                    borderRadius: '32px',
+                                    boxShadow: '0 10px 0 #D1FAE5',
                                     direction: 'ltr'
                                 }}
                             >
-                                <div style={{ position: 'absolute', top: '20px', left: '20px', width: '45px', height: '45px', background: colorScheme.bgSubtle, borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: colorScheme.primary, fontWeight: '900', fontSize: '16px', border: '2px solid #D1FAE5', fontFamily: 'Fredoka' }}>
+                                <div style={{ position: 'absolute', top: '15px', left: '15px', width: '35px', height: '35px', background: colorScheme.bgSubtle, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: colorScheme.primary, fontWeight: '900', fontSize: '14px', border: '2px solid #D1FAE5', fontFamily: 'Fredoka' }}>
                                     {surah.number}
                                 </div>
-                                <h1 style={{ fontSize: '72px', marginBottom: '15px', color: colorScheme.primary, fontFamily: 'Amiri' }}>{surah.name}</h1>
-                                <h3 style={{ color: '#1E293B', fontWeight: 'bold', fontFamily: 'Fredoka', fontSize: '24px' }}>{surah.englishName}</h3>
-                                <p style={{ color: '#64748B', fontSize: '18px', fontFamily: 'Fredoka' }}>{surah.meaning}</p>
+                                <h1 style={{ fontSize: 'var(--fs-2xl)', marginBottom: '10px', color: colorScheme.primary, fontFamily: 'Amiri' }}>{surah.name}</h1>
+                                <h3 style={{ color: '#1E293B', fontWeight: 'bold', fontFamily: 'Fredoka', fontSize: 'var(--fs-lg)' }}>{surah.englishName}</h3>
+                                <p style={{ color: '#64748B', fontSize: 'var(--fs-sm)', fontFamily: 'Fredoka' }}>{surah.meaning}</p>
                                 <div style={{
-                                    marginTop: '30px',
+                                    marginTop: '20px',
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: '8px',
+                                    gap: '6px',
                                     color: colorScheme.primary,
                                     fontWeight: 'bold',
                                     fontFamily: 'Fredoka',
-                                    fontSize: '18px'
+                                    fontSize: '14px'
                                 }}>
-                                    Learn Now <ChevronRight size={20} />
+                                    Learn Now <ChevronRight size={16} />
                                 </div>
                             </motion.div>
                         ))}
@@ -194,43 +216,43 @@ const QuranExplorer = () => {
                                 <motion.div
                                     style={{
                                         background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
-                                        padding: '50px 30px',
+                                        padding: '40px 20px',
                                         color: 'white',
                                         textAlign: 'center',
-                                        borderRadius: '40px',
-                                        boxShadow: '0 15px 0 #064E3B',
+                                        borderRadius: '32px',
+                                        boxShadow: '0 12px 0 #064E3B',
                                         border: '4px solid rgba(255,255,255,0.1)',
-                                        marginBottom: '40px'
+                                        marginBottom: '30px'
                                     }}
                                 >
-                                    <h1 style={{ fontSize: '64px', marginBottom: '10px', fontFamily: 'Amiri' }}>{surahData.name}</h1>
-                                    <p style={{ fontSize: '22px', opacity: 0.9, marginBottom: '25px', fontFamily: 'Fredoka' }}>{selectedSurah.englishName} • {selectedSurah.meaning}</p>
+                                    <h1 style={{ fontSize: 'clamp(40px, 10vw, 64px)', marginBottom: '5px', fontFamily: 'Amiri' }}>{surahData.name}</h1>
+                                    <p style={{ fontSize: 'var(--fs-base)', opacity: 0.9, marginBottom: '20px', fontFamily: 'Fredoka' }}>{selectedSurah.englishName} • {selectedSurah.meaning}</p>
 
-                                    <div style={{ fontSize: '36px', fontFamily: 'Amiri', marginBottom: '40px', background: 'rgba(255,255,255,0.1)', padding: '20px', borderRadius: '24px', display: 'inline-block' }}>
+                                    <div style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontFamily: 'Amiri', marginBottom: '30px', background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '20px', display: 'inline-block' }}>
                                         بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
                                     </div>
 
-                                    <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
                                         <motion.button
                                             whileTap={{ y: 5, boxShadow: 'none' }}
                                             onClick={handlePlayPause}
                                             style={{
                                                 background: 'white',
                                                 color: colorScheme.accent,
-                                                padding: '20px 50px',
-                                                fontSize: '24px',
-                                                borderRadius: '24px',
+                                                padding: '12px 30px',
+                                                fontSize: '18px',
+                                                borderRadius: '20px',
                                                 border: 'none',
                                                 fontFamily: 'Fredoka',
                                                 fontWeight: 'bold',
-                                                boxShadow: '0 10px 0 #D1FAE5',
+                                                boxShadow: '0 8px 0 #D1FAE5',
                                                 cursor: 'pointer',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: '12px'
+                                                gap: '10px'
                                             }}
                                         >
-                                            {isPlaying ? <Pause size={32} /> : <Play size={32} />} {isPlaying ? 'Pause' : 'Play All'}
+                                            {isPlaying ? <Pause size={24} /> : <Play size={24} />} {isPlaying ? 'Pause' : 'Play All'}
                                         </motion.button>
                                         <motion.button
                                             whileTap={{ y: 5, boxShadow: 'none' }}
@@ -238,24 +260,24 @@ const QuranExplorer = () => {
                                             style={{
                                                 background: 'rgba(255,255,255,0.2)',
                                                 color: 'white',
-                                                padding: '20px',
-                                                borderRadius: '24px',
-                                                border: '3px solid white',
-                                                boxShadow: '0 10px 0 rgba(0,0,0,0.1)',
+                                                padding: '12px',
+                                                borderRadius: '20px',
+                                                border: '2px solid white',
+                                                boxShadow: '0 8px 0 rgba(0,0,0,0.1)',
                                                 cursor: 'pointer'
                                             }}
                                         >
-                                            <RotateCcw size={32} />
+                                            <RotateCcw size={24} />
                                         </motion.button>
                                     </div>
                                 </motion.div>
 
                                 <div style={{
                                     background: 'white',
-                                    padding: '60px 40px',
-                                    borderRadius: '40px',
-                                    boxShadow: '0 15px 0 #E2E8F0',
-                                    border: '4px solid #F8FAFC',
+                                    padding: 'clamp(30px, 8vw, 60px) clamp(16px, 5vw, 40px)',
+                                    borderRadius: '32px',
+                                    boxShadow: '0 12px 0 #E2E8F0',
+                                    border: '3px solid #F8FAFC',
                                     direction: 'rtl',
                                     textAlign: 'center'
                                 }}>
@@ -270,12 +292,12 @@ const QuranExplorer = () => {
                                             }}
                                             whileHover={{ scale: 1.08, backgroundColor: '#F0FDFA' }}
                                             style={{
-                                                fontSize: '44px',
+                                                fontSize: 'clamp(28px, 8vw, 44px)',
                                                 fontFamily: 'Amiri',
-                                                padding: '12px 20px',
-                                                borderRadius: '24px',
+                                                padding: '8px 15px',
+                                                borderRadius: '16px',
                                                 display: 'inline-block',
-                                                margin: '12px',
+                                                margin: '8px',
                                                 cursor: 'pointer',
                                                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                                 lineHeight: '1.6'

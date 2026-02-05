@@ -92,36 +92,36 @@ const ReadingJourney = () => {
 
     return (
         <div className="container" style={{ padding: '40px 20px', minHeight: '100vh', background: colorScheme.bgSubtle }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => stage === 'selection' ? navigate('/') : setStage('selection')}
                         className="btn"
-                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px' }}
+                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
                     >
                         <ArrowLeft size={20} />
                     </motion.button>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '10px',
                         background: 'white',
-                        padding: '8px 20px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
                         boxShadow: '0 8px 0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}>
-                        <div style={{ background: colorScheme.primary, padding: '8px', borderRadius: '12px' }}>
-                            <Library size={24} color="white" />
+                        <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
+                            <Library size={20} color="white" />
                         </div>
-                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B' }}>Reading Journey</h2>
+                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-lg)' }}>Reading Journey</h2>
                     </div>
                 </div>
             </header>
 
             {stage === 'selection' && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
                     {stories.map(story => (
                         <motion.div
                             key={story.id}
@@ -131,19 +131,19 @@ const ReadingJourney = () => {
                             style={{
                                 cursor: 'pointer',
                                 background: 'white',
-                                borderRadius: '32px',
-                                padding: '30px',
-                                boxShadow: '0 12px 0 #E2E8F0',
+                                borderRadius: '28px',
+                                padding: '20px',
+                                boxShadow: '0 10px 0 #E2E8F0',
                                 border: '3px solid #F8FAFC'
                             }}
                         >
                             <div style={{
                                 width: '100%',
-                                height: '220px',
+                                height: 'clamp(140px, 30vw, 220px)',
                                 background: '#F8FAFC',
-                                borderRadius: '24px',
+                                borderRadius: '20px',
                                 overflow: 'hidden',
-                                marginBottom: '25px',
+                                marginBottom: '15px',
                                 border: '2px solid #F1F5F9'
                             }}>
                                 <img
@@ -152,10 +152,10 @@ const ReadingJourney = () => {
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                             </div>
-                            <h3 style={{ fontSize: '28px', marginBottom: '12px', fontFamily: 'Fredoka', color: '#1E293B' }}>{story.title}</h3>
-                            <p style={{ color: '#64748B', fontFamily: 'Fredoka', fontSize: '18px', lineHeight: '1.5' }}>{story.description}</p>
-                            <div style={{ marginTop: '25px', color: colorScheme.primary, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Fredoka', fontSize: '20px' }}>
-                                Open Book <ChevronRight size={22} />
+                            <h3 style={{ fontSize: 'var(--fs-lg)', marginBottom: '8px', fontFamily: 'Fredoka', color: '#1E293B' }}>{story.title}</h3>
+                            <p style={{ color: '#64748B', fontFamily: 'Fredoka', fontSize: 'var(--fs-sm)', lineHeight: '1.4' }}>{story.description}</p>
+                            <div style={{ marginTop: '15px', color: colorScheme.primary, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Fredoka', fontSize: '16px' }}>
+                                Open Book <ChevronRight size={18} />
                             </div>
                         </motion.div>
                     ))}
@@ -168,21 +168,21 @@ const ReadingJourney = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         style={{
-                            padding: '60px',
+                            padding: 'clamp(20px, 5vw, 60px)',
                             background: 'white',
-                            borderRadius: '40px',
-                            boxShadow: '0 15px 0 #E2E8F0',
-                            border: '4px solid #F8FAFC'
+                            borderRadius: '32px',
+                            boxShadow: '0 12px 0 #E2E8F0',
+                            border: '3px solid #F8FAFC'
                         }}
                     >
                         <div style={{
                             width: '100%',
-                            height: '450px',
+                            height: 'clamp(200px, 50vw, 450px)',
                             background: '#F8FAFC',
-                            borderRadius: '32px',
-                            marginBottom: '50px',
+                            borderRadius: '24px',
+                            marginBottom: '30px',
                             overflow: 'hidden',
-                            border: '5px solid #F1F5F9',
+                            border: '3px solid #F1F5F9',
                             boxShadow: 'inset 0 4px 10px rgba(0,0,0,0.05)'
                         }}>
                             <img
@@ -191,31 +191,31 @@ const ReadingJourney = () => {
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                         </div>
-                        <h1 style={{ marginBottom: '40px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: '48px', color: '#1E293B' }}>{selectedStory.title}</h1>
-                        <div style={{ fontSize: '26px', lineHeight: '1.8', color: '#334155', textAlign: 'center', fontFamily: 'Fredoka' }}>
+                        <h1 style={{ marginBottom: '20px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: 'var(--fs-xl)', color: '#1E293B' }}>{selectedStory.title}</h1>
+                        <div style={{ fontSize: 'var(--fs-base)', lineHeight: '1.6', color: '#334155', textAlign: 'center', fontFamily: 'Fredoka' }}>
                             {selectedStory.content.map((para, i) => (
-                                <p key={i} style={{ marginBottom: '30px' }}>{para}</p>
+                                <p key={i} style={{ marginBottom: '20px' }}>{para}</p>
                             ))}
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => { setStage('quiz'); setCurrentQuestion(0); setScore(0); }}
                                 style={{
-                                    padding: '24px 60px',
-                                    fontSize: '24px',
+                                    padding: '16px 40px',
+                                    fontSize: '18px',
                                     background: colorScheme.primary,
                                     color: 'white',
                                     border: 'none',
-                                    borderRadius: '24px',
+                                    borderRadius: '20px',
                                     fontFamily: 'Fredoka',
                                     fontWeight: 'bold',
-                                    boxShadow: `0 8px 0 ${colorScheme.accent}`,
+                                    boxShadow: `0 6px 0 ${colorScheme.accent}`,
                                     cursor: 'pointer'
                                 }}
                             >
-                                I'm Finished Reading! 🌟
+                                Finished! 🌟
                             </motion.button>
                         </div>
                     </motion.div>
@@ -224,22 +224,21 @@ const ReadingJourney = () => {
 
             {stage === 'quiz' && selectedStory && (
                 <div style={{ maxWidth: '650px', margin: '40px auto' }}>
-                    <h2 style={{ marginBottom: '32px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: '36px' }}>Story Quiz</h2>
+                    <h2 style={{ marginBottom: '20px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: '28px' }}>Story Quiz</h2>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ background: 'white', padding: '50px', borderRadius: '40px', boxShadow: '0 15px 0 #E2E8F0', border: '4px solid #F8FAFC' }}
+                        style={{ background: 'white', padding: 'clamp(20px, 5vw, 50px)', borderRadius: '32px', boxShadow: '0 12px 0 #E2E8F0', border: '3px solid #F8FAFC' }}
                     >
-                        <p style={{ fontSize: '18px', color: colorScheme.primary, fontWeight: 'bold', marginBottom: '15px', fontFamily: 'Fredoka' }}>QUESTION {currentQuestion + 1} OF {selectedStory.questions.length}</p>
-                        <h3 style={{ fontSize: '32px', marginBottom: '40px', fontFamily: 'Fredoka', color: '#1E293B' }}>{selectedStory.questions[currentQuestion].q}</h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+                        <p style={{ fontSize: '14px', color: colorScheme.primary, fontWeight: 'bold', marginBottom: '10px', fontFamily: 'Fredoka' }}>QUESTION {currentQuestion + 1} OF {selectedStory.questions.length}</p>
+                        <h3 style={{ fontSize: 'var(--fs-lg)', marginBottom: '30px', fontFamily: 'Fredoka', color: '#1E293B' }}>{selectedStory.questions[currentQuestion].q}</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
                             {selectedStory.questions[currentQuestion].options.map(opt => (
                                 <motion.button
                                     key={opt}
-                                    whileHover={{ y: -5 }}
-                                    whileTap={{ y: 5, boxShadow: 'none' }}
+                                    whileTap={{ scale: 0.98 }}
                                     onClick={() => handleNextQuestion(opt)}
-                                    style={{ background: 'white', color: '#1E293B', border: '3px solid #F1F5F9', padding: '20px', fontSize: '22px', borderRadius: '24px', fontFamily: 'Fredoka', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 8px 0 #F1F5F9' }}
+                                    style={{ background: 'white', color: '#1E293B', border: '2px solid #F1F5F9', padding: '15px', fontSize: '18px', borderRadius: '20px', fontFamily: 'Fredoka', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 6px 0 #F1F5F9' }}
                                 >
                                     {opt}
                                 </motion.button>
@@ -268,13 +267,13 @@ const ReadingJourney = () => {
             )}
 
             {stage === 'vocab' && selectedStory && (
-                <div style={{ maxWidth: '650px', margin: '60px auto' }}>
-                    <h2 style={{ marginBottom: '32px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: '36px' }}>Word Magic</h2>
-                    <motion.div initial={{ opacity: 0, y: i => i * 20 }} style={{ background: 'white', padding: '50px', borderRadius: '40px', boxShadow: '0 15px 0 #E2E8F0', border: '4px solid #F8FAFC' }}>
-                        <p style={{ textAlign: 'center', fontSize: '22px', marginBottom: '25px', color: '#64748B', fontFamily: 'Fredoka' }}>
+                <div style={{ maxWidth: '650px', margin: '40px auto' }}>
+                    <h2 style={{ marginBottom: '25px', textAlign: 'center', fontFamily: 'Fredoka', fontSize: '28px' }}>Word Magic</h2>
+                    <motion.div initial={{ opacity: 0, y: 20 }} style={{ background: 'white', padding: 'clamp(30px, 8vw, 50px)', borderRadius: '32px', boxShadow: '0 12px 0 #E2E8F0', border: '3px solid #F8FAFC' }}>
+                        <p style={{ textAlign: 'center', fontSize: '16px', marginBottom: '20px', color: '#64748B', fontFamily: 'Fredoka' }}>
                             Find the <strong style={{ color: colorScheme.primary }}>{selectedStory.vocab[0].type}</strong> for:
                         </p>
-                        <h1 style={{ textAlign: 'center', fontSize: '80px', marginBottom: '50px', color: colorScheme.primary, fontFamily: 'Fredoka' }}>{selectedStory.vocab[0].word}</h1>
+                        <h1 style={{ textAlign: 'center', fontSize: 'clamp(40px, 12vw, 80px)', marginBottom: '30px', color: colorScheme.primary, fontFamily: 'Fredoka' }}>{selectedStory.vocab[0].word}</h1>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                             {selectedStory.vocab[0].options.map(opt => (
                                 <motion.button

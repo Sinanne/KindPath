@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import MathMaster from './pages/MathMaster';
@@ -8,6 +7,10 @@ import EnglishJourney from './pages/EnglishJourney';
 import ReadingJourney from './pages/ReadingJourney';
 import ArabicAdventure from './pages/ArabicAdventure';
 import QuranExplorer from './pages/QuranExplorer';
+import MathGame from './pages/MathGame';
+import ScienceGame from './pages/ScienceGame';
+import LanguageGame from './pages/LanguageGame';
+import AyahSorterGame from './pages/AyahSorterGame';
 
 function App() {
   return (
@@ -17,11 +20,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/math" element={<MathMaster />} />
+            <Route path="/math/game" element={<MathGame />} />
             <Route path="/science" element={<ScienceExplorer />} />
+            <Route path="/science/game" element={<ScienceGame />} />
             <Route path="/english" element={<EnglishJourney />} />
+            <Route path="/english/game" element={<LanguageGame />} />
             <Route path="/reading" element={<ReadingJourney />} />
             <Route path="/arabic" element={<ArabicAdventure />} />
+            <Route path="/arabic/game" element={<LanguageGame />} />
             <Route path="/quran" element={<QuranExplorer />} />
+            <Route path="/quran/sorter" element={<AyahSorterGame />} />
           </Routes>
         </main>
       </div>

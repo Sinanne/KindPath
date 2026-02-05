@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, BookOpen, CheckCircle, Volume2, Book } from 'lucide-react';
+import { ArrowLeft, BookOpen, CheckCircle, Volume2, Book, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
@@ -89,35 +89,44 @@ const EnglishJourney = () => {
 
     return (
         <div className="container" style={{ padding: '40px 20px', minHeight: '100vh', background: colorScheme.bgSubtle }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '60px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => navigate('/')}
                         className="btn"
-                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px' }}
+                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
                     >
                         <ArrowLeft size={20} />
                     </motion.button>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '10px',
                         background: 'white',
-                        padding: '8px 20px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
                         boxShadow: '0 8px 0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}>
-                        <div style={{ background: colorScheme.primary, padding: '8px', borderRadius: '12px' }}>
-                            <Book size={24} color="#1E293B" />
+                        <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
+                            <Book size={20} color="#1E293B" />
                         </div>
-                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B' }}>English Garden</h2>
+                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-lg)' }}>English Garden</h2>
                     </div>
                 </div>
 
-                <div style={{ background: 'white', padding: '10px 24px', borderRadius: '20px', fontWeight: 'bold', fontFamily: 'Fredoka', color: '#64748B', boxShadow: '0 6px 0 #F1F5F9' }}>
-                    Word {currentWordIndex + 1} of {shuffledWords.length}
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <motion.button
+                        whileTap={{ y: 4, boxShadow: 'none' }}
+                        onClick={() => navigate('/english/game')}
+                        style={{ background: '#6366F1', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '16px', fontWeight: 'bold', fontFamily: 'Fredoka', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 0 #4338CA', fontSize: '14px' }}
+                    >
+                        <Sparkles size={16} /> POP
+                    </motion.button>
+                    <div style={{ background: 'white', padding: '8px 16px', borderRadius: '16px', fontWeight: 'bold', fontFamily: 'Fredoka', color: '#64748B', boxShadow: '0 6px 0 #F1F5F9', fontSize: '12px' }}>
+                        {currentWordIndex + 1} / {shuffledWords.length}
+                    </div>
                 </div>
             </header>
 
@@ -130,27 +139,27 @@ const EnglishJourney = () => {
                             animate={{ opacity: 1, y: 0 }}
                             style={{
                                 background: 'white',
-                                borderRadius: '40px',
-                                padding: '40px',
-                                boxShadow: '0 12px 0 #E2E8F0',
-                                border: '4px solid #F8FAFC',
-                                marginBottom: '40px'
+                                borderRadius: '32px',
+                                padding: 'clamp(20px, 5vw, 40px)',
+                                boxShadow: '0 10px 0 #E2E8F0',
+                                border: '3px solid #F8FAFC',
+                                marginBottom: '30px'
                             }}
                         >
-                            <div style={{ fontSize: '120px', marginBottom: '10px' }}>{currentWord.image}</div>
-                            <p style={{ color: '#64748B', fontSize: '24px', marginBottom: '32px', fontFamily: 'Fredoka', fontWeight: 'bold' }}>{currentWord.hint}</p>
+                            <div style={{ fontSize: 'clamp(60px, 15vw, 120px)', marginBottom: '5px' }}>{currentWord.image}</div>
+                            <p style={{ color: '#64748B', fontSize: 'var(--fs-base)', marginBottom: '25px', fontFamily: 'Fredoka', fontWeight: 'bold' }}>{currentWord.hint}</p>
 
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '30px', flexWrap: 'wrap' }}>
                                 {currentWord.word.split('').map((_, idx) => (
                                     <div
                                         key={idx}
                                         style={{
-                                            width: '70px',
-                                            height: '80px',
+                                            width: 'clamp(35px, 10vw, 70px)',
+                                            height: 'clamp(40px, 12vw, 80px)',
                                             background: '#F8FAFC',
-                                            borderRadius: '16px',
-                                            borderBottom: '6px solid #CBD5E1',
-                                            fontSize: '48px',
+                                            borderRadius: '12px',
+                                            borderBottom: '4px solid #CBD5E1',
+                                            fontSize: 'clamp(24px, 8vw, 48px)',
                                             fontWeight: '900',
                                             display: 'flex',
                                             alignItems: 'center',
@@ -164,23 +173,22 @@ const EnglishJourney = () => {
                                 ))}
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 1fr)', gap: '12px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
                                 {letters.map(char => (
                                     <motion.button
                                         key={char}
-                                        whileHover={{ y: -3 }}
-                                        whileTap={{ y: 3, boxShadow: 'none' }}
+                                        whileTap={{ y: 2, boxShadow: 'none' }}
                                         onClick={() => handleCharClick(char)}
                                         style={{
                                             background: 'white',
                                             color: '#1E293B',
                                             border: '2px solid #F1F5F9',
-                                            padding: '15px 5px',
-                                            fontSize: '22px',
+                                            padding: '10px 4px',
+                                            fontSize: 'clamp(14px, 4vw, 22px)',
                                             fontFamily: 'Fredoka',
                                             fontWeight: 'bold',
-                                            borderRadius: '16px',
-                                            boxShadow: '0 5px 0 #E2E8F0',
+                                            borderRadius: '12px',
+                                            boxShadow: '0 4px 0 #E2E8F0',
                                             cursor: 'pointer'
                                         }}
                                     >
@@ -188,19 +196,18 @@ const EnglishJourney = () => {
                                     </motion.button>
                                 ))}
                                 <motion.button
-                                    whileHover={{ y: -3 }}
-                                    whileTap={{ y: 3, boxShadow: 'none' }}
+                                    whileTap={{ y: 2, boxShadow: 'none' }}
                                     onClick={() => setUserInput('')}
                                     style={{
                                         gridColumn: 'span 2',
                                         background: '#EF4444',
                                         color: 'white',
                                         border: 'none',
-                                        borderRadius: '16px',
-                                        fontSize: '18px',
+                                        borderRadius: '12px',
+                                        fontSize: 'clamp(12px, 3vw, 18px)',
                                         fontWeight: 'bold',
                                         fontFamily: 'Fredoka',
-                                        boxShadow: '0 5px 0 #991B1B',
+                                        boxShadow: '0 4px 0 #991B1B',
                                         cursor: 'pointer'
                                     }}
                                 >

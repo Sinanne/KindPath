@@ -108,65 +108,86 @@ const MathMaster = () => {
 
     return (
         <div className="container" style={{ padding: '40px 20px', minHeight: '100vh', background: colorScheme.bgSubtle, display: 'flex', flexDirection: 'column' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <motion.button
                         whileTap={{ y: 4, boxShadow: 'none' }}
                         onClick={() => navigate('/')}
                         className="btn"
-                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px' }}
+                        style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
                     >
                         <ArrowLeft size={20} />
                     </motion.button>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '10px',
                         background: 'white',
-                        padding: '8px 20px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
                         boxShadow: '0 8px 0 #E2E8F0',
                         border: '2px solid #F1F5F9'
                     }}>
-                        <div style={{ background: colorScheme.primary, padding: '8px', borderRadius: '12px' }}>
-                            <Calculator size={24} color="white" />
+                        <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
+                            <Calculator size={20} color="white" />
                         </div>
-                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B' }}>Math Master</h2>
+                        <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: 'var(--fs-lg)' }}>Math Master</h2>
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '15px' }}>
-                    <div style={{ background: 'white', padding: '10px 20px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 6px 0 #F1F5F9' }}>
-                        <Trophy color="#F59E0B" size={20} />
-                        <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold' }}>Level {level}</span>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <motion.button
+                        whileTap={{ y: 4, boxShadow: 'none' }}
+                        onClick={() => navigate('/math/game')}
+                        style={{
+                            background: '#F59E0B',
+                            color: 'white',
+                            padding: '10px 16px',
+                            border: 'none',
+                            borderRadius: '16px',
+                            fontFamily: 'Fredoka',
+                            fontWeight: 'bold',
+                            boxShadow: '0 6px 0 #D97706',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            fontSize: '14px'
+                        }}
+                    >
+                        <Zap size={18} fill="white" /> GAME
+                    </motion.button>
+                    <div style={{ background: 'white', padding: '8px 16px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 6px 0 #F1F5F9' }}>
+                        <Trophy color="#F59E0B" size={18} />
+                        <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold', fontSize: '14px' }}>Level {level}</span>
                     </div>
-                    <div style={{ background: 'white', padding: '10px 20px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 6px 0 #F1F5F9' }}>
-                        <Flame color="#EF4444" size={20} />
-                        <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold' }}>{streak} Streak</span>
+                    <div style={{ background: 'white', padding: '8px 16px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 6px 0 #F1F5F9' }}>
+                        <Flame color="#EF4444" size={18} />
+                        <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold', fontSize: '14px' }}>{streak}</span>
                     </div>
                 </div>
             </header>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px', marginBottom: '40px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginBottom: '30px' }}>
                 {/* Digit Selector */}
                 <div style={{ textAlign: 'center' }}>
-                    <p style={{ fontFamily: 'Fredoka', fontWeight: 'bold', color: '#64748B', marginBottom: '12px' }}>DIGITS</p>
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <p style={{ fontFamily: 'Fredoka', fontWeight: 'bold', color: '#64748B', marginBottom: '8px', fontSize: '12px' }}>DIGITS</p>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                         {[1, 2, 3].map(d => (
                             <motion.button
                                 key={d}
                                 whileTap={{ y: 3, boxShadow: 'none' }}
                                 onClick={() => setDigits(d)}
                                 style={{
-                                    width: '50px',
-                                    height: '50px',
+                                    width: '40px',
+                                    height: '40px',
                                     background: digits === d ? colorScheme.primary : 'white',
                                     color: digits === d ? 'white' : '#1E293B',
                                     border: 'none',
-                                    borderRadius: '15px',
+                                    borderRadius: '12px',
                                     fontFamily: 'Fredoka',
                                     fontWeight: 'bold',
-                                    fontSize: '20px',
+                                    fontSize: '18px',
                                     boxShadow: digits === d ? `0 4px 0 ${colorScheme.accent}` : '0 4px 0 #E2E8F0',
                                     cursor: 'pointer'
                                 }}
@@ -179,26 +200,27 @@ const MathMaster = () => {
 
                 {/* Operation Switcher */}
                 <div style={{ textAlign: 'center' }}>
-                    <p style={{ fontFamily: 'Fredoka', fontWeight: 'bold', color: '#64748B', marginBottom: '12px' }}>OPERATION</p>
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <p style={{ fontFamily: 'Fredoka', fontWeight: 'bold', color: '#64748B', marginBottom: '8px', fontSize: '12px' }}>OPERATION</p>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
                         {operations.map(op => (
                             <motion.button
                                 key={op.symbol}
                                 whileTap={{ y: 3, boxShadow: 'none' }}
                                 onClick={() => setOperation(op.symbol)}
                                 style={{
-                                    padding: '8px 20px',
+                                    padding: '6px 15px',
                                     background: operation === op.symbol ? colorScheme.primary : 'white',
                                     color: operation === op.symbol ? 'white' : '#1E293B',
                                     border: 'none',
-                                    borderRadius: '15px',
+                                    borderRadius: '12px',
                                     fontFamily: 'Fredoka',
                                     fontWeight: 'bold',
+                                    fontSize: '14px',
                                     boxShadow: operation === op.symbol ? `0 4px 0 ${colorScheme.accent}` : '0 4px 0 #E2E8F0',
                                     cursor: 'pointer'
                                 }}
                             >
-                                {op.symbol} {op.label}
+                                {op.symbol}
                             </motion.button>
                         ))}
                     </div>
@@ -211,10 +233,10 @@ const MathMaster = () => {
                         width: '100%',
                         maxWidth: '800px',
                         background: 'white',
-                        borderRadius: '40px',
-                        padding: '60px',
-                        boxShadow: '0 15px 0 #F1F5F9',
-                        border: '4px solid #F8FAFC',
+                        borderRadius: '32px',
+                        padding: 'clamp(30px, 8vw, 60px)',
+                        boxShadow: '0 12px 0 #F1F5F9',
+                        border: '3px solid #F8FAFC',
                         position: 'relative',
                         display: 'flex',
                         flexDirection: 'column',
@@ -235,7 +257,7 @@ const MathMaster = () => {
                             key={`${equation.a}-${equation.b}-${operation}`}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            style={{ fontSize: '80px', fontWeight: '900', color: '#1E293B', marginBottom: '50px', fontFamily: 'Fredoka' }}
+                            style={{ fontSize: 'clamp(40px, 12vw, 80px)', fontWeight: '900', color: '#1E293B', marginBottom: '30px', fontFamily: 'Fredoka' }}
                         >
                             {equation.a} {operation} {equation.b} = <span style={{ color: colorScheme.primary }}>?</span>
                         </motion.div>
@@ -251,19 +273,18 @@ const MathMaster = () => {
                             {options.map((opt, i) => (
                                 <motion.button
                                     key={`${opt}-${i}`}
-                                    whileHover={{ y: -5 }}
-                                    whileTap={{ y: 5, boxShadow: 'none' }}
+                                    whileTap={{ scale: 0.95 }}
                                     onClick={() => handleAnswerClick(opt)}
                                     style={{
-                                        height: '100px',
-                                        fontSize: '40px',
+                                        height: 'clamp(60px, 15vw, 100px)',
+                                        fontSize: 'clamp(24px, 8vw, 40px)',
                                         background: 'white',
                                         color: '#1E293B',
                                         border: '4px solid #F8FAFC',
                                         borderRadius: '24px',
                                         fontFamily: 'Fredoka',
                                         fontWeight: 'bold',
-                                        boxShadow: '0 10px 0 #F1F5F9',
+                                        boxShadow: '0 8px 0 #F1F5F9',
                                         cursor: 'pointer'
                                     }}
                                 >
