@@ -118,7 +118,12 @@ const ScienceExplorer = () => {
             </header>
 
             {/* Topic Selection Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', 
+                gap: isMobile ? '15px' : '20px',
+                paddingBottom: '20px' 
+            }}>
                 {scienceTopics.map(topic => (
                     <motion.div
                         key={topic.id}
@@ -129,7 +134,7 @@ const ScienceExplorer = () => {
                             cursor: 'pointer',
                             background: 'white',
                             borderRadius: '28px',
-                            padding: '25px',
+                            padding: isMobile ? '20px' : '25px',
                             boxShadow: '0 10px 0 #E2E8F0',
                             border: '3px solid #F8FAFC',
                             display: 'flex',
@@ -140,17 +145,17 @@ const ScienceExplorer = () => {
                     >
                         {/* Icon Circle */}
                         <div style={{
-                            width: '100px',
-                            height: '100px',
+                            width: isMobile ? '80px' : '100px',
+                            height: isMobile ? '80px' : '100px',
                             borderRadius: '50%',
                             background: `${topic.color}15`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: '20px',
+                            marginBottom: isMobile ? '15px' : '20px',
                             border: `3px solid ${topic.color}30`
                         }}>
-                            <div style={{ fontSize: '50px' }}>
+                            <div style={{ fontSize: isMobile ? '40px' : '50px' }}>
                                 {topic.emoji}
                             </div>
                         </div>

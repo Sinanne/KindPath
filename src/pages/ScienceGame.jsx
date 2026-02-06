@@ -228,7 +228,25 @@ const SpaceRunner = ({ isJumping, animationPhase, planetColor }) => {
 // ============================================================================
 
 const ScrollingGround = ({ planetName, groundColor, isPlaying, speed }) => {
-    // ... ground pattern logic ...
+    const getGroundPattern = () => {
+        const slots = 20;
+        const items = [];
+        for (let i = 0; i < slots; i++) {
+            const x = (i / slots) * 100;
+            if (planetName === 'Earth') {
+                items.push(<circle key={i} cx={`${x}%`} cy="20" r="8" fill="rgba(255,255,255,0.2)" />);
+                items.push(<path key={`p${i}`} d={`M${x}% 2`} stroke="rgba(255,255,255,0.3)" strokeWidth="2" />);
+            } else if (planetName === 'Moon') {
+                items.push(<circle key={i} cx={`${x}%`} cy="15" r="10" fill="rgba(0,0,0,0.1)" />);
+                items.push(<circle key={`c${i}`} cx={`${x + 2}%`} cy="25" r="4" fill="rgba(0,0,0,0.05)" />);
+            } else if (planetName === 'Mars') {
+                items.push(<path key={i} d={`M${x}% 10 L${x + 3}% 30 L${x - 3}% 30 Z`} fill="rgba(0,0,0,0.1)" />);
+            } else if (planetName === 'Jupiter') {
+                items.push(<rect key={i} x={`${x}%`} y="10" width="15" height="4" rx="2" fill="rgba(255,255,255,0.1)" />);
+            }
+        }
+        return items;
+    };
     
     // Sync animation duration with game speed (base speed 8 was 1.5s)
     const duration = speed ? (1.5 * 8 / speed) : 1.5;

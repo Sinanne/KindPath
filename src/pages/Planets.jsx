@@ -100,7 +100,7 @@ const Planets = () => {
     const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.2, 0.3));
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: colorScheme.bgSubtle, overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: colorScheme.bgSubtle, overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 <header style={{ 
                     display: 'flex', 

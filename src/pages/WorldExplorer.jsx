@@ -115,7 +115,7 @@ const WorldExplorer = () => {
     };
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: 'linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%)', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: 'linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%)', overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 {/* Header */}
                 <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
