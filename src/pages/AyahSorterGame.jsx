@@ -12,6 +12,8 @@ const AyahSorterGame = () => {
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
 
     const availableSurahs = [
+        { number: 80, name: 'Abasa', nameAr: 'عبس' },
+        { number: 81, name: 'At-Takwir', nameAr: 'التكوير' },
         { number: 112, name: 'Al-Ikhlas', nameAr: 'الإخلاص' },
         { number: 113, name: 'Al-Falaq', nameAr: 'الفلق' },
         { number: 114, name: 'An-Nas', nameAr: 'الناس' }

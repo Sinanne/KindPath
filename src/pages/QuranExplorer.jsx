@@ -22,6 +22,8 @@ const QuranExplorer = () => {
 
     const surahs = [
         { number: 1, name: "الفاتحة", englishName: "Al-Fatiha", meaning: "The Opening" },
+        { number: 80, name: "عبس", englishName: "Abasa", meaning: "He Frowned" },
+        { number: 81, name: "التكوير", englishName: "At-Takwir", meaning: "The Overthrowing" },
         { number: 83, name: "المطففين", englishName: "Al-Mutaffifin", meaning: "The Defrauders" },
         { number: 112, name: "الإخلاص", englishName: "Al-Ikhlas", meaning: "The Sincerity" },
         { number: 113, name: "الفلق", englishName: "Al-Falaq", meaning: "The Daybreak" },
