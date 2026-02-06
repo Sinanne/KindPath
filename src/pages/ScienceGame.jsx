@@ -602,8 +602,8 @@ const GravityRunner = () => {
                 const obstacleHeight = obs.height;
 
                 const hasXOverlap = obstacleLeft < playerRight && obstacleRight > playerLeft;
-                // Higher tolerance for Y overlap (was -10, now -20)
-                const hasYOverlap = posYRef.current < (obstacleHeight - 20);
+                // Footprint only collision: Player must be below 1px above ground to collide
+                const hasYOverlap = posYRef.current < 1;
 
                 if (hasXOverlap && hasYOverlap) {
                     setGameState('gameover');
@@ -763,7 +763,7 @@ const GravityRunner = () => {
                     planetName={currentPlanet.name}
                     groundColor={currentPlanet.groundColor}
                     isPlaying={gameState === 'playing'}
-                    speed={8 + Math.floor(score / 1000) * 0.5}
+                    speed={4.5 + Math.floor(score / 1000) * 0.5}
                 />
 
                 <AnimatePresence>
