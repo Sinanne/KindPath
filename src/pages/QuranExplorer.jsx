@@ -11,6 +11,14 @@ const QuranExplorer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentAyahIndex, setCurrentAyahIndex] = useState(0);
     const audioRef = useRef(null);
+    const ayahRefs = useRef([]);
+
+    // Initialize/Reset ayahRefs when surahData changes
+    useEffect(() => {
+        if (surahData) {
+            ayahRefs.current = ayahRefs.current.slice(0, surahData.ayahs.length);
+        }
+    }, [surahData]);
 
     const colorScheme = {
         primary: '#10B981', // Emerald
@@ -86,6 +94,14 @@ const QuranExplorer = () => {
     useEffect(() => {
         if (isPlaying && audioRef.current) {
             audioRef.current.play().catch(e => console.error("Playback error:", e));
+        }
+
+        // Auto-scroll to current ayah
+        if (ayahRefs.current[currentAyahIndex]) {
+            ayahRefs.current[currentAyahIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
     }, [currentAyahIndex, isPlaying]);
 
@@ -286,6 +302,7 @@ const QuranExplorer = () => {
                                     {surahData.ayahs.map((ayah, index) => (
                                         <motion.span
                                             key={ayah.number}
+                                            ref={el => ayahRefs.current[index] = el}
                                             onClick={() => jumpToAyah(index)}
                                             animate={{
                                                 backgroundColor: currentAyahIndex === index ? '#D1FAE5' : 'transparent',
