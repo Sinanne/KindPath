@@ -227,66 +227,11 @@ const SpaceRunner = ({ isJumping, animationPhase, planetColor }) => {
 // SCROLLING GROUND COMPONENT
 // ============================================================================
 
-const ScrollingGround = ({ planetName, groundColor, isPlaying }) => {
-    const getGroundPattern = () => {
-        switch (planetName) {
-            case 'Earth':
-                return (
-                    <>
-                        {/* Grass tufts */}
-                        {[...Array(20)].map((_, i) => (
-                            <g key={i} transform={`translate(${i * 50}, 0)`}>
-                                <path d="M5 20 Q8 5 12 20" stroke="#16A34A" strokeWidth="2" fill="none" />
-                                <path d="M15 20 Q17 8 20 20" stroke="#22C55E" strokeWidth="2" fill="none" />
-                                <path d="M25 20 Q28 10 32 20" stroke="#16A34A" strokeWidth="2" fill="none" />
-                                <ellipse cx="40" cy="18" rx="4" ry="3" fill="#A3A3A3" opacity="0.5" />
-                            </g>
-                        ))}
-                    </>
-                );
-            case 'Moon':
-                return (
-                    <>
-                        {/* Moon craters and rocks */}
-                        {[...Array(15)].map((_, i) => (
-                            <g key={i} transform={`translate(${i * 70}, 0)`}>
-                                <ellipse cx="20" cy="18" rx="12" ry="4" fill="#475569" opacity="0.4" />
-                                <ellipse cx="50" cy="16" rx="8" ry="3" fill="#475569" opacity="0.3" />
-                                <circle cx="35" cy="15" r="3" fill="#64748B" />
-                            </g>
-                        ))}
-                    </>
-                );
-            case 'Mars':
-                return (
-                    <>
-                        {/* Mars rocks and dust */}
-                        {[...Array(18)].map((_, i) => (
-                            <g key={i} transform={`translate(${i * 55}, 0)`}>
-                                <polygon points="10,20 15,8 20,20" fill="#B91C1C" opacity="0.6" />
-                                <polygon points="30,20 38,5 46,20" fill="#991B1B" opacity="0.5" />
-                                <ellipse cx="25" cy="18" rx="5" ry="2" fill="#7C2D12" opacity="0.4" />
-                            </g>
-                        ))}
-                    </>
-                );
-            case 'Jupiter':
-                return (
-                    <>
-                        {/* Jupiter gas swirls */}
-                        {[...Array(12)].map((_, i) => (
-                            <g key={i} transform={`translate(${i * 85}, 0)`}>
-                                <ellipse cx="20" cy="15" rx="15" ry="6" fill="#D97706" opacity="0.3" />
-                                <ellipse cx="50" cy="12" rx="20" ry="5" fill="#B45309" opacity="0.4" />
-                                <ellipse cx="70" cy="18" rx="10" ry="4" fill="#F59E0B" opacity="0.3" />
-                            </g>
-                        ))}
-                    </>
-                );
-            default:
-                return null;
-        }
-    };
+const ScrollingGround = ({ planetName, groundColor, isPlaying, speed }) => {
+    // ... ground pattern logic ...
+    
+    // Sync animation duration with game speed (base speed 8 was 1.5s)
+    const duration = speed ? (1.5 * 8 / speed) : 1.5;
 
     return (
         <div style={{
@@ -304,7 +249,7 @@ const ScrollingGround = ({ planetName, groundColor, isPlaying }) => {
                 width="200%"
                 height="100%"
                 style={{
-                    animation: isPlaying ? 'scrollGround 1.5s linear infinite' : 'none'
+                    animation: isPlaying ? `scrollGround ${duration}s linear infinite` : 'none'
                 }}
             >
                 {getGroundPattern()}
@@ -626,7 +571,8 @@ const GravityRunner = () => {
         }
 
         // Obstacle Update
-        const obstacleSpeed = 8 + (score / 1500);
+        // Start at 5.5 speed, increase by 0.5 every 100 UI points (1000 score)
+        const obstacleSpeed = 5.5 + Math.floor(score / 1000) * 0.5;
         setObstacles(prev => {
             const next = prev.map(obs => ({ ...obs, x: obs.x - (obstacleSpeed * delta / 16) }));
 
@@ -649,10 +595,10 @@ const GravityRunner = () => {
             return next.filter(obs => obs.x > -150);
         });
 
-        // Spawn Logic
+        // Spawn Logic - Adjust interval based on speed to keep gaps fair
         spawnTimerRef.current += delta;
-        const spawnInterval = 1800 - (obstacleSpeed * 50);
-        if (spawnTimerRef.current > Math.max(800, spawnInterval)) {
+        const spawnInterval = 3000 - (obstacleSpeed * 150);
+        if (spawnTimerRef.current > Math.max(1000, spawnInterval)) {
             const w = 50 + Math.random() * 40;
             const h = 50 + Math.random() * 40;
             setObstacles(prev => [...prev, { id: Date.now(), x: 900, width: w, height: h }]);
@@ -762,6 +708,7 @@ const GravityRunner = () => {
                     planetName={currentPlanet.name}
                     groundColor={currentPlanet.groundColor}
                     isPlaying={gameState === 'playing'}
+                    speed={8 + Math.floor(score / 1000) * 0.5}
                 />
 
                 <AnimatePresence>
