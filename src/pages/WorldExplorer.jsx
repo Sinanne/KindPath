@@ -82,6 +82,13 @@ const WorldExplorer = () => {
     const [selectedContinent, setSelectedContinent] = useState(null);
     const [quizIndex, setQuizIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#10B981', accent: '#059669' };
 
@@ -153,10 +160,29 @@ const WorldExplorer = () => {
                                 initial={{ opacity: 0 }} 
                                 animate={{ opacity: 1 }} 
                                 exit={{ opacity: 0 }} 
-                                style={{ flex: 1, display: 'flex', gap: '20px', overflow: 'hidden', padding: '5px' }}
+                                style={{ 
+                                    flex: 1, 
+                                    display: 'flex', 
+                                    gap: '20px', 
+                                    overflow: isMobile ? 'auto' : 'hidden', 
+                                    padding: '5px',
+                                    flexDirection: isMobile ? 'column' : 'row'
+                                }}
                             >
                                 {/* LEFT: Map Container */}
-                                <div style={{ flex: 7, background: 'white', borderRadius: '28px', padding: '15px', boxShadow: '0 8px 0 #E2E8F0', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+                                <div style={{ 
+                                    flex: isMobile ? 'none' : 7, 
+                                    height: isMobile ? '300px' : 'auto',
+                                    background: 'white', 
+                                    borderRadius: '28px', 
+                                    padding: '15px', 
+                                    boxShadow: '0 8px 0 #E2E8F0', 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    overflow: 'hidden', 
+                                    position: 'relative',
+                                    flexShrink: 0
+                                }}>
                                     {/* Map Container Content */}
                                     
                                     <svg viewBox="0 0 1200 800" style={{ width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid meet">
@@ -204,7 +230,13 @@ const WorldExplorer = () => {
                                 </div>
 
                                 {/* RIGHT: Info Sidebar */}
-                                <div style={{ flex: 3, display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                <div style={{ 
+                                    flex: isMobile ? 'none' : 3, 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    gap: '15px',
+                                    minWidth: isMobile ? 'auto' : '300px'
+                                }}>
                                     <AnimatePresence mode="wait">
                                         {selectedContinent ? (
                                             <motion.div 
@@ -216,7 +248,7 @@ const WorldExplorer = () => {
                                                     flex: 1, 
                                                     background: 'white', 
                                                     borderRadius: '28px', 
-                                                    padding: '25px', 
+                                                    padding: isMobile ? '20px' : '25px', 
                                                     boxShadow: '0 8px 0 #E2E8F0',
                                                     display: 'flex',
                                                     flexDirection: 'column',

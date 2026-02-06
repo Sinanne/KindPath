@@ -15,6 +15,13 @@ const HumanBody = () => {
     const [selectedOrgan, setSelectedOrgan] = useState(null);
     const [quizIndex, setQuizIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#EC4899', accent: '#DB2777' };
 
@@ -88,7 +95,18 @@ const HumanBody = () => {
                                 </p>
                                 
                                 {/* Organ Grid */}
-                                <div style={{ flex: 1, background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 8px 0 #E2E8F0', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', minHeight: 0 }}>
+                                <div style={{ 
+                                    flex: 1, 
+                                    background: 'white', 
+                                    borderRadius: '24px', 
+                                    padding: isMobile ? '12px' : '20px', 
+                                    boxShadow: '0 8px 0 #E2E8F0', 
+                                    display: 'grid', 
+                                    gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', 
+                                    gap: isMobile ? '10px' : '15px', 
+                                    minHeight: 0,
+                                    overflowY: 'auto'
+                                }}>
                                     {organs.map((organ) => (
                                         <motion.div
                                             key={organ.name}
@@ -98,7 +116,7 @@ const HumanBody = () => {
                                             style={{
                                                 background: selectedOrgan?.name === organ.name ? `${organ.color}15` : '#F8FAFC',
                                                 borderRadius: '20px',
-                                                padding: '25px',
+                                                padding: isMobile ? '15px 10px' : '25px',
                                                 cursor: 'pointer',
                                                 border: selectedOrgan?.name === organ.name ? `3px solid ${organ.color}` : '3px solid transparent',
                                                 display: 'flex',
@@ -108,25 +126,34 @@ const HumanBody = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            <div style={{ fontSize: '55px', marginBottom: '10px' }}>{organ.emoji}</div>
-                                            <h4 style={{ fontFamily: 'Fredoka', color: organ.color, margin: 0, fontSize: '18px' }}>{organ.name}</h4>
+                                            <div style={{ fontSize: isMobile ? '40px' : '55px', marginBottom: '5px' }}>{organ.emoji}</div>
+                                            <h4 style={{ fontFamily: 'Fredoka', color: organ.color, margin: 0, fontSize: isMobile ? '14px' : '18px' }}>{organ.name}</h4>
                                         </motion.div>
                                     ))}
                                 </div>
                                 
                                 {/* Info Panel - Bottom */}
-                                <div style={{ background: 'white', borderRadius: '20px', padding: '15px 25px', marginTop: '15px', boxShadow: '0 6px 0 #E2E8F0', minHeight: '85px', flexShrink: 0 }}>
+                                <div style={{ background: 'white', borderRadius: '20px', padding: isMobile ? '15px' : '15px 25px', marginTop: '15px', boxShadow: '0 6px 0 #E2E8F0', minHeight: '85px', flexShrink: 0 }}>
                                     {selectedOrgan ? (
-                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', gap: '25px', alignItems: 'center' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '150px' }}>
-                                                <div style={{ fontSize: '45px' }}>{selectedOrgan.emoji}</div>
-                                                <h3 style={{ fontFamily: 'Fredoka', fontSize: '24px', color: selectedOrgan.color, margin: 0 }}>{selectedOrgan.name}</h3>
+                                        <motion.div 
+                                            initial={{ opacity: 0, y: 10 }} 
+                                            animate={{ opacity: 1, y: 0 }} 
+                                            style={{ 
+                                                display: 'flex', 
+                                                gap: isMobile ? '12px' : '25px', 
+                                                alignItems: isMobile ? 'flex-start' : 'center',
+                                                flexDirection: isMobile ? 'column' : 'row' 
+                                            }}
+                                        >
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: isMobile ? 'auto' : '150px' }}>
+                                                <div style={{ fontSize: isMobile ? '35px' : '45px' }}>{selectedOrgan.emoji}</div>
+                                                <h3 style={{ fontFamily: 'Fredoka', fontSize: isMobile ? '20px' : '24px', color: selectedOrgan.color, margin: 0 }}>{selectedOrgan.name}</h3>
                                             </div>
-                                            <div style={{ flex: 1, fontFamily: 'Fredoka', fontSize: '15px', color: '#475569' }}>
+                                            <div style={{ flex: 1, fontFamily: 'Fredoka', fontSize: isMobile ? '13px' : '15px', color: '#475569' }}>
                                                 <strong>🎯 Job:</strong> {selectedOrgan.job}
                                             </div>
-                                            <div style={{ background: '#FEF3C7', padding: '10px 18px', borderRadius: '12px', maxWidth: '280px' }}>
-                                                <span style={{ fontFamily: 'Fredoka', fontSize: '13px', color: '#92400E' }}><strong>💡 Fun Fact:</strong> {selectedOrgan.fact}</span>
+                                            <div style={{ background: '#FEF3C7', padding: '10px 18px', borderRadius: '12px', maxWidth: isMobile ? '100%' : '280px', width: '100%' }}>
+                                                <span style={{ fontFamily: 'Fredoka', fontSize: isMobile ? '12px' : '13px', color: '#92400E' }}><strong>💡 Fun Fact:</strong> {selectedOrgan.fact}</span>
                                             </div>
                                         </motion.div>
                                     ) : (

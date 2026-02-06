@@ -571,20 +571,21 @@ const GravityRunner = () => {
         }
 
         // Obstacle Update
-        // Start at 5.5 speed, increase by 0.5 every 100 UI points (1000 score)
-        const obstacleSpeed = 5.5 + Math.floor(score / 1000) * 0.5;
+        // Start even slower for mobile (4.5), increase by 0.5 every 100 UI points
+        const obstacleSpeed = 4.5 + Math.floor(score / 1000) * 0.5;
         setObstacles(prev => {
             const next = prev.map(obs => ({ ...obs, x: obs.x - (obstacleSpeed * delta / 16) }));
 
             for (const obs of next) {
                 const playerLeft = 55;
-                const playerRight = 110;
+                const playerRight = 100; // Narrower player box for fairness
                 const obstacleLeft = obs.x;
                 const obstacleRight = obs.x + obs.width;
                 const obstacleHeight = obs.height;
 
                 const hasXOverlap = obstacleLeft < playerRight && obstacleRight > playerLeft;
-                const hasYOverlap = posYRef.current < (obstacleHeight - 10);
+                // Higher tolerance for Y overlap (was -10, now -20)
+                const hasYOverlap = posYRef.current < (obstacleHeight - 20);
 
                 if (hasXOverlap && hasYOverlap) {
                     setGameState('gameover');
@@ -595,12 +596,12 @@ const GravityRunner = () => {
             return next.filter(obs => obs.x > -150);
         });
 
-        // Spawn Logic - Adjust interval based on speed to keep gaps fair
+        // Spawn Logic - More generous gaps (was 3000, now 3500)
         spawnTimerRef.current += delta;
-        const spawnInterval = 3000 - (obstacleSpeed * 150);
-        if (spawnTimerRef.current > Math.max(1000, spawnInterval)) {
-            const w = 50 + Math.random() * 40;
-            const h = 50 + Math.random() * 40;
+        const spawnInterval = 3500 - (obstacleSpeed * 180);
+        if (spawnTimerRef.current > Math.max(1200, spawnInterval)) {
+            const w = 45 + Math.random() * 35; // Slightly smaller obstacles
+            const h = 45 + Math.random() * 35;
             setObstacles(prev => [...prev, { id: Date.now(), x: 900, width: w, height: h }]);
             spawnTimerRef.current = 0;
         }
@@ -627,24 +628,46 @@ const GravityRunner = () => {
             onClick={handleJump}
             style={{ padding: '40px 20px', minHeight: '100vh', background: '#0F172A', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden', outline: 'none' }}
         >
-            <header style={{ width: '100%', maxWidth: '1000px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', zIndex: 10, flexWrap: 'wrap', gap: '15px' }}>
+            <header style={{ 
+                width: '100%', 
+                maxWidth: '1000px', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: '15px', 
+                zIndex: 10, 
+                flexWrap: 'nowrap', // Don't wrap on header to keep it clean
+                gap: '10px' 
+            }}>
                 <motion.button
-                    whileTap={{ y: 4 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={(e) => { e.stopPropagation(); navigate('/science'); }}
-                    style={{ background: 'rgba(255,255,255,0.1)', color: 'white', padding: '10px', border: 'none', borderRadius: '16px', cursor: 'pointer' }}
+                    style={{ background: 'rgba(255,255,255,0.1)', color: 'white', padding: '10px', border: 'none', borderRadius: '16px', cursor: 'pointer', flexShrink: 0 }}
                 >
                     <ArrowLeft size={20} />
                 </motion.button>
 
-                <h2 style={{ fontFamily: 'Fredoka', margin: 0, fontSize: 'var(--fs-lg)' }}>Gravity Runner</h2>
+                <h2 style={{ fontFamily: 'Fredoka', margin: 0, fontSize: '18px', textAlign: 'center', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Gravity Runner</h2>
 
-                <div style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', padding: '8px 20px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Star color="#F59E0B" fill="#F59E0B" size={20} />
-                    <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold', fontSize: 'var(--fs-lg)' }}>{Math.floor(score / 10)}</span>
+                <div style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', padding: '6px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0 }}>
+                    <Star color="#F59E0B" fill="#F59E0B" size={16} />
+                    <span style={{ fontFamily: 'Fredoka', fontWeight: 'bold', fontSize: '16px' }}>{Math.floor(score / 10)}</span>
                 </div>
             </header>
 
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', zIndex: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ 
+                display: 'flex', 
+                gap: '8px', 
+                marginBottom: '20px', 
+                zIndex: 10, 
+                flexWrap: 'nowrap', // Keep planet selection on one row with scroll if needed
+                overflowX: 'auto',
+                width: '100%',
+                paddingBottom: '5px',
+                justifyContent: 'center',
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none'
+            }}>
                 {planets.map(p => (
                     <motion.button
                         key={p.name}
@@ -652,10 +675,11 @@ const GravityRunner = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         style={{
-                            padding: '8px 16px', borderRadius: '15px', border: 'none', cursor: 'pointer',
+                            padding: '6px 14px', borderRadius: '12px', border: 'none', cursor: 'pointer',
                             background: currentPlanet.name === p.name ? p.color : 'rgba(255,255,255,0.1)',
-                            color: 'white', fontWeight: 'bold', fontFamily: 'Fredoka', fontSize: '14px',
-                            boxShadow: currentPlanet.name === p.name ? `0 4px 15px ${p.color}50` : 'none'
+                            color: 'white', fontWeight: 'bold', fontFamily: 'Fredoka', fontSize: '12px',
+                            boxShadow: currentPlanet.name === p.name ? `0 3px 10px ${p.color}50` : 'none',
+                            whiteSpace: 'nowrap'
                         }}
                     >
                         {p.name}
@@ -663,7 +687,20 @@ const GravityRunner = () => {
                 ))}
             </div>
 
-            <div ref={gameRef} style={{ flex: 1, width: '100%', maxWidth: '850px', minHeight: '300px', height: 'auto', background: '#000', borderRadius: '32px', border: '4px solid white', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+            <div ref={gameRef} style={{ 
+                flex: 1, 
+                width: '100%', 
+                maxWidth: '850px', 
+                minHeight: '250px', // Smaller minHeight for mobile
+                height: 'auto', 
+                background: '#000', 
+                borderRadius: '24px', 
+                border: '3px solid white', 
+                position: 'relative', 
+                overflow: 'hidden', 
+                boxShadow: '0 15px 40px rgba(0,0,0,0.5)',
+                aspectRatio: '16/9' // Maintain aspect ratio on mobile
+            }}>
 
                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     {currentPlanet.bg}

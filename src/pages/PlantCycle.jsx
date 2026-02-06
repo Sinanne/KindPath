@@ -15,6 +15,13 @@ const PlantCycle = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [quizIndex, setQuizIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#22C55E', accent: '#16A34A' };
 
@@ -46,7 +53,7 @@ const PlantCycle = () => {
     const step = lifeCycleSteps[currentStep];
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 {/* Header */}
                 <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
@@ -85,7 +92,16 @@ const PlantCycle = () => {
                         {stage === 'learn' && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                                 {/* Timeline - Horizontal */}
-                                <div style={{ display: 'flex', gap: '8px', marginBottom: '15px', flexShrink: 0 }}>
+                                <div style={{ 
+                                    display: 'flex', 
+                                    gap: '8px', 
+                                    marginBottom: '15px', 
+                                    flexShrink: 0, 
+                                    overflowX: 'auto', 
+                                    paddingBottom: '8px',
+                                    msOverflowStyle: 'none',
+                                    scrollbarWidth: 'none'
+                                }}>
                                     {lifeCycleSteps.map((s, i) => (
                                         <motion.button
                                             key={s.name}
@@ -93,7 +109,7 @@ const PlantCycle = () => {
                                             whileTap={{ scale: 0.95 }}
                                             onClick={() => setCurrentStep(i)}
                                             style={{
-                                                flex: 1,
+                                                flex: isMobile ? '0 0 80px' : 1,
                                                 background: currentStep === i ? colorScheme.primary : 'white',
                                                 border: 'none',
                                                 borderRadius: '14px',
@@ -106,8 +122,8 @@ const PlantCycle = () => {
                                                 gap: '4px'
                                             }}
                                         >
-                                            <span style={{ fontSize: '28px' }}>{s.emoji}</span>
-                                            <span style={{ fontFamily: 'Fredoka', fontSize: '11px', color: currentStep === i ? 'white' : '#64748B', fontWeight: 'bold' }}>{s.name}</span>
+                                            <span style={{ fontSize: isMobile ? '22px' : '28px' }}>{s.emoji}</span>
+                                            <span style={{ fontFamily: 'Fredoka', fontSize: '10px', color: currentStep === i ? 'white' : '#64748B', fontWeight: 'bold' }}>{s.name}</span>
                                         </motion.button>
                                     ))}
                                 </div>
@@ -131,11 +147,11 @@ const PlantCycle = () => {
                                         <p style={{ fontFamily: 'Fredoka', fontSize: '14px', color: '#92400E', margin: 0 }}>💡 <strong>Fun Fact:</strong> {step.fact}</p>
                                     </div>
                                     
-                                    <div style={{ display: 'flex', gap: '20px', marginTop: '25px' }}>
-                                        <motion.button whileTap={{ scale: 0.95 }} onClick={() => setCurrentStep(Math.max(0, currentStep - 1))} disabled={currentStep === 0} style={{ padding: '12px 24px', background: currentStep === 0 ? '#F1F5F9' : 'white', border: '2px solid #E2E8F0', borderRadius: '14px', cursor: currentStep === 0 ? 'default' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Fredoka', fontWeight: 'bold', color: currentStep === 0 ? '#94A3B8' : '#1E293B' }}>
-                                            <ChevronLeft size={20} /> Previous
+                                    <div style={{ display: 'flex', gap: '15px', marginTop: '25px', width: '100%', justifyContent: 'center' }}>
+                                        <motion.button whileTap={{ scale: 0.95 }} onClick={() => setCurrentStep(Math.max(0, currentStep - 1))} disabled={currentStep === 0} style={{ flex: isMobile ? 1 : 'none', padding: '12px 24px', background: currentStep === 0 ? '#F1F5F9' : 'white', border: '2px solid #E2E8F0', borderRadius: '14px', cursor: currentStep === 0 ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontFamily: 'Fredoka', fontWeight: 'bold', color: currentStep === 0 ? '#94A3B8' : '#1E293B', fontSize: isMobile ? '14px' : '16px' }}>
+                                            <ChevronLeft size={20} /> Prev
                                         </motion.button>
-                                        <motion.button whileTap={{ scale: 0.95 }} onClick={() => setCurrentStep(Math.min(lifeCycleSteps.length - 1, currentStep + 1))} disabled={currentStep === lifeCycleSteps.length - 1} style={{ padding: '12px 24px', background: currentStep === lifeCycleSteps.length - 1 ? '#F1F5F9' : colorScheme.primary, border: 'none', borderRadius: '14px', cursor: currentStep === lifeCycleSteps.length - 1 ? 'default' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Fredoka', fontWeight: 'bold', color: currentStep === lifeCycleSteps.length - 1 ? '#94A3B8' : 'white', boxShadow: currentStep === lifeCycleSteps.length - 1 ? 'none' : `0 4px 0 ${colorScheme.accent}` }}>
+                                        <motion.button whileTap={{ scale: 0.95 }} onClick={() => setCurrentStep(Math.min(lifeCycleSteps.length - 1, currentStep + 1))} disabled={currentStep === lifeCycleSteps.length - 1} style={{ flex: isMobile ? 1 : 'none', padding: '12px 24px', background: currentStep === lifeCycleSteps.length - 1 ? '#F1F5F9' : colorScheme.primary, border: 'none', borderRadius: '14px', cursor: currentStep === lifeCycleSteps.length - 1 ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontFamily: 'Fredoka', fontWeight: 'bold', color: currentStep === lifeCycleSteps.length - 1 ? '#94A3B8' : 'white', boxShadow: currentStep === lifeCycleSteps.length - 1 ? 'none' : `0 4px 0 ${colorScheme.accent}`, fontSize: isMobile ? '14px' : '16px' }}>
                                             Next <ChevronRight size={20} />
                                         </motion.button>
                                     </div>

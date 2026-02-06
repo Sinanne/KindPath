@@ -15,6 +15,13 @@ const SeasonsWeather = () => {
     const [selectedSeason, setSelectedSeason] = useState(null);
     const [quizIndex, setQuizIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#F59E0B', accent: '#D97706' };
 
@@ -51,7 +58,7 @@ const SeasonsWeather = () => {
     };
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 {/* Header */}
                 <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
@@ -90,9 +97,9 @@ const SeasonsWeather = () => {
                         {stage === 'learn' && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                                 {/* Seasons Row */}
-                                <div style={{ background: 'white', borderRadius: '20px', padding: '15px', boxShadow: '0 6px 0 #E2E8F0', marginBottom: '15px', flexShrink: 0 }}>
-                                    <h3 style={{ fontFamily: 'Fredoka', color: '#64748B', fontSize: '13px', margin: '0 0 12px', textAlign: 'center' }}>🗓️ THE FOUR SEASONS - Click to learn!</h3>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+                                <div style={{ background: 'white', borderRadius: '20px', padding: isMobile ? '10px' : '15px', boxShadow: '0 6px 0 #E2E8F0', marginBottom: '15px', flexShrink: 0 }}>
+                                    <h3 style={{ fontFamily: 'Fredoka', color: '#64748B', fontSize: '13px', margin: '0 0 12px', textAlign: 'center' }}>🗓️ THE SEASONS</h3>
+                                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '10px' }}>
                                         {seasons.map((season) => (
                                             <motion.div
                                                 key={season.name}
@@ -102,7 +109,7 @@ const SeasonsWeather = () => {
                                                 style={{
                                                     background: selectedSeason?.name === season.name ? `${season.color}15` : '#F8FAFC',
                                                     borderRadius: '16px',
-                                                    padding: '15px',
+                                                    padding: isMobile ? '12px' : '15px',
                                                     cursor: 'pointer',
                                                     border: selectedSeason?.name === season.name ? `3px solid ${season.color}` : '3px solid transparent',
                                                     display: 'flex',
@@ -111,43 +118,43 @@ const SeasonsWeather = () => {
                                                     textAlign: 'center'
                                                 }}
                                             >
-                                                <div style={{ fontSize: '45px', marginBottom: '6px' }}>{season.emoji}</div>
-                                                <h4 style={{ fontFamily: 'Fredoka', color: season.color, margin: 0, fontSize: '17px' }}>{season.name}</h4>
+                                                <div style={{ fontSize: isMobile ? '35px' : '45px', marginBottom: '4px' }}>{season.emoji}</div>
+                                                <h4 style={{ fontFamily: 'Fredoka', color: season.color, margin: 0, fontSize: isMobile ? '15px' : '17px' }}>{season.name}</h4>
                                             </motion.div>
                                         ))}
                                     </div>
                                 </div>
                                 
                                 {/* Weather Types & Info */}
-                                <div style={{ flex: 1, display: 'flex', gap: '15px', minHeight: 0 }}>
+                                <div style={{ flex: 1, display: 'flex', gap: '15px', minHeight: 0, flexDirection: isMobile ? 'column' : 'row' }}>
                                     {/* Weather Types */}
-                                    <div style={{ flex: 1, background: 'white', borderRadius: '20px', padding: '15px', boxShadow: '0 6px 0 #E2E8F0' }}>
+                                    <div style={{ flex: 1, background: 'white', borderRadius: '20px', padding: '15px', boxShadow: '0 6px 0 #E2E8F0', overflowY: isMobile ? 'visible' : 'auto' }}>
                                         <h3 style={{ fontFamily: 'Fredoka', color: '#64748B', fontSize: '13px', margin: '0 0 12px', textAlign: 'center' }}>🌤️ WEATHER TYPES</h3>
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: '10px' }}>
                                             {weatherTypes.map((w) => (
                                                 <div key={w.name} style={{ background: '#F8FAFC', padding: '15px 10px', borderRadius: '14px', textAlign: 'center' }}>
-                                                    <div style={{ fontSize: '35px', marginBottom: '4px' }}>{w.emoji}</div>
-                                                    <h5 style={{ fontFamily: 'Fredoka', fontSize: '13px', color: '#1E293B', margin: '0 0 2px' }}>{w.name}</h5>
-                                                    <span style={{ fontFamily: 'Fredoka', fontSize: '11px', color: '#94A3B8' }}>{w.desc}</span>
+                                                    <div style={{ fontSize: isMobile ? '30px' : '35px', marginBottom: '4px' }}>{w.emoji}</div>
+                                                    <h5 style={{ fontFamily: 'Fredoka', fontSize: isMobile ? '12px' : '13px', color: '#1E293B', margin: '0 0 2px' }}>{w.name}</h5>
+                                                    <span style={{ fontFamily: 'Fredoka', fontSize: '10px', color: '#94A3B8' }}>{w.desc}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                     
                                     {/* Season Info Panel */}
-                                    <div style={{ flex: 1, background: 'white', borderRadius: '20px', padding: '20px', boxShadow: '0 6px 0 #E2E8F0', display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ flex: 1, background: 'white', borderRadius: '20px', padding: '20px', boxShadow: '0 6px 0 #E2E8F0', display: 'flex', flexDirection: 'column', minHeight: isMobile ? '200px' : 'auto' }}>
                                         {selectedSeason ? (
-                                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-                                                    <div style={{ fontSize: '60px' }}>{selectedSeason.emoji}</div>
-                                                    <h3 style={{ fontFamily: 'Fredoka', fontSize: '26px', color: selectedSeason.color, margin: '10px 0 0' }}>{selectedSeason.name}</h3>
+                                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ height: '100%', display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: isMobile ? 'center' : 'stretch', gap: isMobile ? '20px' : '0' }}>
+                                                <div style={{ textAlign: 'center', marginBottom: isMobile ? '0' : '15px', minWidth: isMobile ? '100px' : 'auto' }}>
+                                                    <div style={{ fontSize: isMobile ? '50px' : '60px' }}>{selectedSeason.emoji}</div>
+                                                    <h3 style={{ fontFamily: 'Fredoka', fontSize: isMobile ? '20px' : '26px', color: selectedSeason.color, margin: '5px 0 0' }}>{selectedSeason.name}</h3>
                                                 </div>
-                                                <div style={{ fontFamily: 'Fredoka', fontSize: '14px', color: '#475569', flex: 1 }}>
-                                                    <p style={{ margin: '0 0 8px' }}><strong>Weather:</strong> {selectedSeason.weather}</p>
-                                                    <p style={{ margin: '0 0 8px' }}><strong>Clothes:</strong> {selectedSeason.clothes}</p>
-                                                    <p style={{ margin: '0 0 12px' }}><strong>Activities:</strong> {selectedSeason.activities}</p>
-                                                    <div style={{ background: '#FEF3C7', padding: '12px', borderRadius: '12px', marginTop: 'auto' }}>
-                                                        <strong>💡 Fun Fact:</strong> {selectedSeason.fact}
+                                                <div style={{ fontFamily: 'Fredoka', fontSize: '14px', color: '#475569', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                                    <p style={{ margin: '0 0 5px', fontSize: isMobile ? '13px' : '14px' }}><strong>Weather:</strong> {selectedSeason.weather}</p>
+                                                    <p style={{ margin: '0 0 5px', fontSize: isMobile ? '13px' : '14px' }}><strong>Clothes:</strong> {selectedSeason.clothes}</p>
+                                                    <p style={{ margin: '0 0 10px', fontSize: isMobile ? '13px' : '14px' }}><strong>Activities:</strong> {selectedSeason.activities}</p>
+                                                    <div style={{ background: '#FEF3C7', padding: '10px', borderRadius: '12px', marginTop: 'auto' }}>
+                                                        <span style={{ fontSize: isMobile ? '12px' : '13px' }}><strong>💡 Fact:</strong> {selectedSeason.fact}</span>
                                                     </div>
                                                 </div>
                                             </motion.div>

@@ -102,55 +102,63 @@ const Planets = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: colorScheme.bgSubtle, overflow: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
-                <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <header style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginBottom: '15px', 
+                    flexShrink: 0,
+                    flexWrap: isMobile ? 'nowrap' : 'wrap',
+                    gap: '10px'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '15px' }}>
                         <motion.button
-                            whileTap={{ y: 4, boxShadow: 'none' }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => navigate('/science')}
                             className="btn"
-                            style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '16px', padding: '10px' }}
+                            style={{ background: 'white', color: '#64748B', boxShadow: '0 4px 0 #E2E8F0', borderRadius: '14px', padding: isMobile ? '8px' : '10px' }}
                         >
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={18} />
                         </motion.button>
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '10px',
+                            gap: '8px',
                             background: 'white',
-                            padding: '6px 16px',
+                            padding: isMobile ? '5px 12px' : '6px 16px',
                             borderRadius: '20px',
                             boxShadow: '0 4px 0 #E2E8F0',
                             border: '2px solid #F1F5F9'
                         }}>
-                            <div style={{ background: colorScheme.primary, padding: '6px', borderRadius: '10px' }}>
-                                <Rocket size={20} color="white" />
+                            <div style={{ background: colorScheme.primary, padding: '5px', borderRadius: '8px' }}>
+                                <Rocket size={18} color="white" />
                             </div>
-                            <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: '18px' }}>Solar System</h2>
+                            <h2 style={{ margin: 0, fontFamily: 'Fredoka', color: '#1E293B', fontSize: isMobile ? '16px' : '18px' }}>Solar System</h2>
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                         <motion.button
                             whileHover={{ scale: 1.05 }}
-                            whileTap={{ y: 4 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => navigate('/science/game')}
                             style={{
                                 background: '#10B981',
                                 color: 'white',
-                                padding: '10px 16px',
+                                padding: isMobile ? '8px 12px' : '10px 16px',
                                 border: 'none',
-                                borderRadius: '16px',
+                                borderRadius: '14px',
                                 fontFamily: 'Fredoka',
                                 fontWeight: 'bold',
                                 boxShadow: '0 4px 0 #059669',
                                 cursor: 'pointer',
-                                fontSize: '14px',
+                                fontSize: isMobile ? '12px' : '14px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '6px'
                             }}
                         >
-                            <Trophy size={16} /> Play Mission Game
+                            <Trophy size={14} /> {isMobile ? 'Play' : 'Play Mission Game'}
                         </motion.button>
 
                         <motion.button
@@ -163,22 +171,22 @@ const Planets = () => {
                             }}
                             animate="pulse"
                             whileHover={{ scale: 1.1 }}
-                            whileTap={{ y: 4, boxShadow: 'none' }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setShowQuiz(!showQuiz)}
                             style={{
                                 background: showQuiz ? '#3B82F6' : '#F59E0B',
                                 color: 'white',
-                                padding: '10px 24px',
+                                padding: isMobile ? '8px 12px' : '10px 24px',
                                 border: 'none',
-                                borderRadius: '16px',
+                                borderRadius: '14px',
                                 fontFamily: 'Fredoka',
                                 fontWeight: 'bold',
                                 boxShadow: showQuiz ? '0 4px 0 #1D4ED8' : '0 4px 0 #D97706',
                                 cursor: 'pointer',
-                                fontSize: '14px'
+                                fontSize: isMobile ? '12px' : '14px'
                             }}
                         >
-                            {showQuiz ? 'Explore' : 'Take Quiz! 🎯'}
+                            {showQuiz ? (isMobile ? 'X' : 'Explore') : (isMobile ? 'Quiz' : 'Take Quiz! 🎯')}
                         </motion.button>
                     </div>
                 </header>
@@ -186,9 +194,28 @@ const Planets = () => {
                 {!showQuiz ? (
                     <div style={{ display: 'flex', gap: '20px', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch', flex: 1, minHeight: 0 }}>
                         {/* Mission Mode Sidebar */}
-                        <div style={{ width: isMobile ? '100%' : '220px', background: 'white', padding: '15px', borderRadius: '32px', boxShadow: '0 8px 0 #E2E8F0', border: '2px solid #F8FAFC', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-                            <h4 style={{ marginBottom: '10px', color: '#94A3B8', fontFamily: 'Fredoka', fontSize: '12px' }}>QUICK TRAVEL</h4>
-                            <div style={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', gap: '6px', overflowX: isMobile ? 'auto' : 'visible' }}>
+                        <div style={{ 
+                            width: isMobile ? '100%' : '220px', 
+                            background: 'white', 
+                            padding: isMobile ? '10px' : '15px', 
+                            borderRadius: '24px', 
+                            boxShadow: '0 8px 0 #E2E8F0', 
+                            border: '2px solid #F8FAFC', 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            overflowY: isMobile ? 'hidden' : 'auto',
+                            flexShrink: 0
+                        }}>
+                            <h4 style={{ marginBottom: '8px', color: '#94A3B8', fontFamily: 'Fredoka', fontSize: '11px', textAlign: isMobile ? 'center' : 'left' }}>QUICK TRAVEL</h4>
+                            <div style={{ 
+                                display: 'flex', 
+                                flexDirection: isMobile ? 'row' : 'column', 
+                                gap: '6px', 
+                                overflowX: isMobile ? 'auto' : 'visible',
+                                paddingBottom: isMobile ? '5px' : '0',
+                                msOverflowStyle: 'none',
+                                scrollbarWidth: 'none'
+                            }}>
                                 {planets.map(p => (
                                     <motion.button
                                         key={p.name}

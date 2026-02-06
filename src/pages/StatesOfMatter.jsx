@@ -15,6 +15,13 @@ const StatesOfMatter = () => {
     const [temperature, setTemperature] = useState(50);
     const [quizIndex, setQuizIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#06B6D4', accent: '#0891B2' };
 
@@ -50,7 +57,7 @@ const StatesOfMatter = () => {
     const info = stateInfo[getState()];
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: 'linear-gradient(135deg, #ECFEFF 0%, #CFFAFE 100%)', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: 'linear-gradient(135deg, #ECFEFF 0%, #CFFAFE 100%)', overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 {/* Header */}
                 <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
@@ -89,7 +96,19 @@ const StatesOfMatter = () => {
                         {stage === 'learn' && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                                 {/* Main Demo Area */}
-                                <div style={{ flex: 1, background: 'white', borderRadius: '24px', padding: '25px', boxShadow: '0 8px 0 #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '50px', minHeight: 0 }}>
+                                <div style={{ 
+                                    flex: 1, 
+                                    background: 'white', 
+                                    borderRadius: '24px', 
+                                    padding: isMobile ? '20px 15px' : '25px', 
+                                    boxShadow: '0 8px 0 #E2E8F0', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    gap: isMobile ? '25px' : '50px', 
+                                    minHeight: 0,
+                                    flexDirection: isMobile ? 'column' : 'row'
+                                }}>
                                     {/* Temperature Slider */}
                                     <div style={{ textAlign: 'center' }}>
                                         <motion.div key={getState()} initial={{ scale: 0.8 }} animate={{ scale: 1 }} style={{ fontSize: '100px', marginBottom: '15px' }}>
@@ -98,7 +117,7 @@ const StatesOfMatter = () => {
                                         <h2 style={{ fontFamily: 'Fredoka', fontSize: '28px', color: info.color, marginBottom: '8px' }}>{info.name}</h2>
                                         <p style={{ fontFamily: 'Fredoka', fontSize: '15px', color: '#64748B', maxWidth: '300px', margin: '0 auto 20px' }}>{info.desc}</p>
                                         
-                                        <div style={{ background: '#F1F5F9', padding: '20px 30px', borderRadius: '20px', width: '350px' }}>
+                                        <div style={{ background: '#F1F5F9', padding: isMobile ? '15px' : '20px 30px', borderRadius: '20px', width: isMobile ? '100%' : '350px' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center', marginBottom: '12px' }}>
                                                 <Thermometer size={28} color="#EF4444" />
                                                 <span style={{ fontFamily: 'Fredoka', fontSize: '32px', fontWeight: 'bold', color: temperature <= 0 ? '#60A5FA' : temperature >= 100 ? '#EF4444' : '#3B82F6' }}>
@@ -113,9 +132,9 @@ const StatesOfMatter = () => {
                                     </div>
                                     
                                     {/* State Cards */}
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: isMobile ? '100%' : 'auto' }}>
                                         {Object.entries(stateInfo).map(([key, state]) => (
-                                            <div key={key} style={{ background: getState() === key ? `${state.color}15` : '#F8FAFC', padding: '15px 20px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '15px', border: getState() === key ? `2px solid ${state.color}` : '2px solid transparent', minWidth: '250px' }}>
+                                            <div key={key} style={{ background: getState() === key ? `${state.color}15` : '#F8FAFC', padding: isMobile ? '10px 15px' : '15px 20px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '15px', border: getState() === key ? `2px solid ${state.color}` : '2px solid transparent', minWidth: isMobile ? 'auto' : '250px' }}>
                                                 <div style={{ fontSize: '40px' }}>{state.emoji}</div>
                                                 <div>
                                                     <h4 style={{ fontFamily: 'Fredoka', color: state.color, margin: 0, fontSize: '16px' }}>{state.name.split(' ')[0]}</h4>

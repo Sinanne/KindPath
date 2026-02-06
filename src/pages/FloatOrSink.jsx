@@ -17,6 +17,13 @@ const FloatOrSink = () => {
     const [score, setScore] = useState(0);
     const [attempts, setAttempts] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const colorScheme = { primary: '#0EA5E9', accent: '#0284C7' };
 
@@ -63,7 +70,7 @@ const FloatOrSink = () => {
     };
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: '20px', background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: isMobile ? '10px' : '20px', background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)', overflowX: 'hidden' }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                 {/* Header */}
                 <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', flexShrink: 0 }}>
@@ -94,7 +101,17 @@ const FloatOrSink = () => {
                                 </div>
                                 
                                 {/* Main Game Area */}
-                                <div style={{ flex: 1, background: 'white', borderRadius: '24px', padding: '25px', boxShadow: '0 8px 0 #E2E8F0', display: 'flex', gap: '30px', minHeight: 0 }}>
+                                <div style={{ 
+                                    flex: 1, 
+                                    background: 'white', 
+                                    borderRadius: '24px', 
+                                    padding: isMobile ? '15px' : '25px', 
+                                    boxShadow: '0 8px 0 #E2E8F0', 
+                                    display: 'flex', 
+                                    gap: isMobile ? '20px' : '30px', 
+                                    minHeight: 0,
+                                    flexDirection: isMobile ? 'column' : 'row'
+                                }}>
                                     {/* Water Tank */}
                                     <div style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
                                         <p style={{ fontFamily: 'Fredoka', color: '#64748B', fontSize: '14px', textAlign: 'center', margin: '0 0 10px' }}>
@@ -102,7 +119,7 @@ const FloatOrSink = () => {
                                         </p>
                                         
                                         {/* Water Container */}
-                                        <div style={{ flex: 1, position: 'relative', background: 'linear-gradient(180deg, #BAE6FD 0%, #0EA5E9 25%, #0284C7 100%)', borderRadius: '24px', overflow: 'hidden', borderBottom: '8px solid #0369A1' }}>
+                                        <div style={{ flex: 1, position: 'relative', background: 'linear-gradient(180deg, #BAE6FD 0%, #0EA5E9 25%, #0284C7 100%)', borderRadius: '24px', overflow: 'hidden', borderBottom: '8px solid #0369A1', minHeight: isMobile ? '250px' : 'auto' }}>
                                             {/* Water Surface Line */}
                                             <div style={{ position: 'absolute', top: '25%', left: 0, right: 0, height: '4px', background: 'rgba(255,255,255,0.4)', zIndex: 5 }} />
                                             
@@ -129,7 +146,7 @@ const FloatOrSink = () => {
                                                 }
                                                 style={{ 
                                                     position: 'absolute', 
-                                                    fontSize: '80px',
+                                                    fontSize: isMobile ? '60px' : '80px',
                                                     filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))',
                                                     zIndex: 10
                                                 }}
@@ -156,7 +173,7 @@ const FloatOrSink = () => {
                                     
                                     {/* Controls & Info */}
                                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                        <h2 style={{ fontFamily: 'Fredoka', fontSize: '24px', color: '#1E293B', textAlign: 'center', marginBottom: '20px' }}>
+                                        <h2 style={{ fontFamily: 'Fredoka', fontSize: isMobile ? '20px' : '24px', color: '#1E293B', textAlign: 'center', marginBottom: '20px' }}>
                                             Will the <span style={{ color: colorScheme.primary }}>{item.name}</span> float or sink?
                                         </h2>
                                         
