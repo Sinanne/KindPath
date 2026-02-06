@@ -7,9 +7,9 @@ import SOUND_URLS from '../utils/sounds';
 
 const MathGame = () => {
     const navigate = useNavigate();
-    const [playCorrect] = useSound(SOUND_URLS.correct);
-    const [playWrong] = useSound(SOUND_URLS.wrong);
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
+    const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
     const [equation, setEquation] = useState({ a: 0, b: 0, answer: 0 });
     const [options, setOptions] = useState([]);

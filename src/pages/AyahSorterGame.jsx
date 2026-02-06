@@ -7,9 +7,9 @@ import SOUND_URLS from '../utils/sounds';
 
 const AyahSorterGame = () => {
     const navigate = useNavigate();
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
-    const [playWrong] = useSound(SOUND_URLS.wrong);
-    const [playCorrect] = useSound(SOUND_URLS.correct);
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
+    const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
 
     const availableSurahs = [
         { number: 112, name: 'Al-Ikhlas', nameAr: 'الإخلاص' },

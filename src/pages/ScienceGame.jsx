@@ -532,8 +532,8 @@ const JupiterBackground = () => (
 
 const GravityRunner = () => {
     const navigate = useNavigate();
-    const [playWrong] = useSound(SOUND_URLS.wrong);
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
+    const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
     const planets = [
         { name: 'Moon', gravity: 0.15, color: '#94A3B8', groundColor: '#64748B', bg: <MoonBackground />, ObstacleComponent: MoonObstacle, dustColor: '#94A3B8' },

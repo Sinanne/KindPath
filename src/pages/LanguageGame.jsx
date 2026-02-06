@@ -7,8 +7,8 @@ import SOUND_URLS from '../utils/sounds';
 
 const LanguageGame = () => {
     const navigate = useNavigate();
-    const [playCorrect] = useSound(SOUND_URLS.correct);
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
     const words = [
         { en: 'APPLE', ar: 'تفاحة', image: '🍎' },

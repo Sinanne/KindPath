@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, Beaker, BookOpen, Star, Zap, Languages, Rocket, Globe, Book, Trophy } from 'lucide-react';
+import { Calculator, Beaker, BookOpen, Star, Zap, Languages, Rocket, Globe, Book, Trophy, Droplets, Heart, Flower2, Sun, Waves, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -173,6 +173,8 @@ const Dashboard = () => {
                     </motion.div>
                 ))}
             </div>
+
+
 
             <div style={{
                 display: 'grid',

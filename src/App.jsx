@@ -11,6 +11,14 @@ import MathGame from './pages/MathGame';
 import ScienceGame from './pages/ScienceGame';
 import LanguageGame from './pages/LanguageGame';
 import AyahSorterGame from './pages/AyahSorterGame';
+import Planets from './pages/Planets';
+import WorldExplorer from './pages/WorldExplorer';
+import StatesOfMatter from './pages/StatesOfMatter';
+import HumanBody from './pages/HumanBody';
+import PlantCycle from './pages/PlantCycle';
+import SeasonsWeather from './pages/SeasonsWeather';
+import FloatOrSink from './pages/FloatOrSink';
+
 
 function App() {
   return (
@@ -23,6 +31,13 @@ function App() {
             <Route path="/math/game" element={<MathGame />} />
             <Route path="/science" element={<ScienceExplorer />} />
             <Route path="/science/game" element={<ScienceGame />} />
+            <Route path="/science/planets" element={<Planets />} />
+            <Route path="/science/world-explorer" element={<WorldExplorer />} />
+            <Route path="/science/states-of-matter" element={<StatesOfMatter />} />
+            <Route path="/science/human-body" element={<HumanBody />} />
+            <Route path="/science/plant-cycle" element={<PlantCycle />} />
+            <Route path="/science/seasons-weather" element={<SeasonsWeather />} />
+            <Route path="/science/float-sink" element={<FloatOrSink />} />
             <Route path="/english" element={<EnglishJourney />} />
             <Route path="/english/game" element={<LanguageGame />} />
             <Route path="/reading" element={<ReadingJourney />} />

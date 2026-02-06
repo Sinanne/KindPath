@@ -11,9 +11,9 @@ const EnglishJourney = () => {
     const [userInput, setUserInput] = useState('');
     const [isCorrect, setIsCorrect] = useState(null);
     const [finished, setFinished] = useState(false);
-    const [playCorrect] = useSound(SOUND_URLS.correct);
-    const [playWrong] = useSound(SOUND_URLS.wrong);
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
+    const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
     const [shuffledWords, setShuffledWords] = useState([]);
 

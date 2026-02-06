@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Languages, Volume2, Star, CheckCircle, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -7,13 +7,25 @@ import SOUND_URLS from '../utils/sounds';
 
 const ArabicAdventure = () => {
     const navigate = useNavigate();
-    const [playCorrect] = useSound(SOUND_URLS.correct);
-    const [playWrong] = useSound(SOUND_URLS.wrong);
-    const [playPerfect] = useSound(SOUND_URLS.perfect);
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
+    const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
+    const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
     const [stage, setStage] = useState('selection'); // selection | alphabet | numbers | words
     const [subStage, setSubStage] = useState('animals'); // animals | objects
     const [selectedItem, setSelectedItem] = useState(null);
+    const utteranceRef = useRef(null);
+    
+    // Prime the voices for desktop browsers
+    useEffect(() => {
+        const loadVoices = () => {
+            window.speechSynthesis.getVoices();
+        };
+        loadVoices();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+    }, []);
 
     const colorScheme = {
         primary: '#A855F7',
@@ -84,9 +96,23 @@ const ArabicAdventure = () => {
     ];
 
     const speak = (text) => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ar-SA';
-        window.speechSynthesis.speak(utterance);
+        // Use ResponsiveVoice for cross-platform Arabic TTS
+        if (window.responsiveVoice) {
+            window.responsiveVoice.cancel(); // Stop any current speech
+            window.responsiveVoice.speak(text, "Arabic Male", {
+                pitch: 1,
+                rate: 0.9,
+                volume: 1
+            });
+        } else {
+            // Fallback to browser TTS if ResponsiveVoice not loaded
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 0.85;
+            window.speechSynthesis.speak(utterance);
+        }
     };
 
     return (
@@ -209,7 +235,7 @@ const ArabicAdventure = () => {
                                 key={item.letter}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { setSelectedItem(item); speak(item.letter); playCorrect(); }}
+                                onClick={() => { setSelectedItem(item); speak(item.letter); }}
                                 style={{
                                     height: '140px',
                                     fontSize: '60px',
@@ -290,7 +316,7 @@ const ArabicAdventure = () => {
                                 key={num.ar}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { speak(num.ar); playCorrect(); }}
+                                onClick={() => { speak(num.ar); }}
                                 style={{
                                     textAlign: 'center',
                                     cursor: 'pointer',
@@ -357,7 +383,7 @@ const ArabicAdventure = () => {
                                 key={item.ar}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { speak(item.ar); playCorrect(); }}
+                                onClick={() => { speak(item.ar); }}
                                 style={{
                                     textAlign: 'center',
                                     cursor: 'pointer',
