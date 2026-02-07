@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Languages, Volume2, Star, CheckCircle, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const ArabicAdventure = () => {
     const navigate = useNavigate();
+    const { addStars } = useGamification();
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
@@ -235,7 +237,7 @@ const ArabicAdventure = () => {
                                 key={item.letter}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { setSelectedItem(item); speak(item.letter); }}
+                                onClick={() => { setSelectedItem(item); speak(item.letter); addStars(5, 'arabic'); }}
                                 style={{
                                     height: '140px',
                                     fontSize: '60px',
@@ -316,7 +318,7 @@ const ArabicAdventure = () => {
                                 key={num.ar}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { speak(num.ar); }}
+                                onClick={() => { speak(num.ar); addStars(5, 'arabic'); }}
                                 style={{
                                     textAlign: 'center',
                                     cursor: 'pointer',
@@ -383,7 +385,7 @@ const ArabicAdventure = () => {
                                 key={item.ar}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ y: 5, boxShadow: 'none' }}
-                                onClick={() => { speak(item.ar); }}
+                                onClick={() => { speak(item.ar); addStars(5, 'arabic'); }}
                                 style={{
                                     textAlign: 'center',
                                     cursor: 'pointer',

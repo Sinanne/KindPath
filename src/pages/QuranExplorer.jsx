@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Play, Pause, RotateCcw, Volume2, Book, ChevronRight, Moon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 
 const QuranExplorer = () => {
     const navigate = useNavigate();
+    const { addStars, unlockBadge } = useGamification();
     const [selectedSurah, setSelectedSurah] = useState(null);
     const [surahData, setSurahData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -83,6 +85,9 @@ const QuranExplorer = () => {
         } else {
             setIsPlaying(false);
             setCurrentAyahIndex(0);
+            const starsToAward = surahData.ayahs.length * 10;
+            addStars(starsToAward, 'quran');
+            unlockBadge('quran_explorer', 'Quran Explorer', '🌟');
         }
     };
 

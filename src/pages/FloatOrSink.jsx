@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Waves, Trophy, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const FloatOrSink = () => {
     const navigate = useNavigate();
+    const { addStars } = useGamification();
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
@@ -56,6 +58,7 @@ const FloatOrSink = () => {
             } else {
                 setGameComplete(true);
                 playPerfect();
+                addStars(score * 10, 'science');
             }
         }, 2200);
     };

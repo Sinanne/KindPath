@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Star, RefreshCcw, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
@@ -495,6 +496,8 @@ const JupiterBackground = () => (
 
 const GravityRunner = () => {
     const navigate = useNavigate();
+    const { addStars } = useGamification();
+    const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
@@ -509,10 +512,13 @@ const GravityRunner = () => {
     const [gameState, setGameState] = useState('start');
     const [score, setScore] = useState(0);
     const [obstacles, setObstacles] = useState([]);
+    const [collectibles, setCollectibles] = useState([]);
     const [animationPhase, setAnimationPhase] = useState(0);
 
     // Physics State
     const [posY, setPosY] = useState(0);
+    const scoreRef = useRef(0);
+    const lastAwardedScoreRef = useRef(0);
     const velocityRef = useRef(0);
     const posYRef = useRef(0);
     const isJumpingRef = useRef(false);
@@ -521,6 +527,7 @@ const GravityRunner = () => {
     const frameRef = useRef();
     const lastTimeRef = useRef(0);
     const spawnTimerRef = useRef(0);
+    const collectibleTimerRef = useRef(0);
     const animationTimerRef = useRef(0);
 
     const handleJump = useCallback(() => {
@@ -549,12 +556,16 @@ const GravityRunner = () => {
     const startGame = () => {
         setGameState('playing');
         setScore(0);
+        scoreRef.current = 0;
+        lastAwardedScoreRef.current = 0;
         setObstacles([]);
+        setCollectibles([]);
         setPosY(0);
         posYRef.current = 0;
         velocityRef.current = 0;
         isJumpingRef.current = false;
         spawnTimerRef.current = 0;
+        collectibleTimerRef.current = 0;
         animationTimerRef.current = 0;
         lastTimeRef.current = performance.now();
     };
@@ -568,7 +579,7 @@ const GravityRunner = () => {
         const delta = time - lastTimeRef.current;
         lastTimeRef.current = time;
 
-        // Animation phase for running legs - faster animation
+        // Animation phase for running legs
         animationTimerRef.current += delta;
         if (animationTimerRef.current > 80) {
             setAnimationPhase(prev => prev + 1);
@@ -588,44 +599,89 @@ const GravityRunner = () => {
             setPosY(posYRef.current);
         }
 
+        const obstacleSpeed = 4.5 + Math.floor(scoreRef.current / 1000) * 0.5;
+
+        // Collectibles Update
+        setCollectibles(prev => {
+            const next = prev.map(item => ({ ...item, x: item.x - (obstacleSpeed * delta / 16) }));
+            const playerLeft = 55;
+            const playerRight = 95;
+            const playerBottom = posYRef.current;
+            const playerTop = posYRef.current + 70;
+
+            const filtered = next.filter(item => {
+                const itemLeft = item.x;
+                const itemRight = item.x + 30;
+                const itemBottom = item.y;
+                const itemTop = item.y + 30;
+
+                const hasXOverlap = itemLeft < playerRight && itemRight > playerLeft;
+                const hasYOverlap = playerBottom < itemTop && playerTop > itemBottom;
+
+                if (hasXOverlap && hasYOverlap) {
+                    addStars(5, 'science');
+                    playCorrect();
+                    return false;
+                }
+                return item.x > -100;
+            });
+            return filtered;
+        });
+
         // Obstacle Update
-        // Start even slower for mobile (4.5), increase by 0.5 every 100 UI points
-        const obstacleSpeed = 4.5 + Math.floor(score / 1000) * 0.5;
         setObstacles(prev => {
             const next = prev.map(obs => ({ ...obs, x: obs.x - (obstacleSpeed * delta / 16) }));
 
             for (const obs of next) {
                 const playerLeft = 55;
-                const playerRight = 100; // Narrower player box for fairness
+                const playerRight = 100;
                 const obstacleLeft = obs.x;
                 const obstacleRight = obs.x + obs.width;
                 const obstacleHeight = obs.height;
 
                 const hasXOverlap = obstacleLeft < playerRight && obstacleRight > playerLeft;
-                // Footprint only collision: Player must be below 1px above ground to collide
-                const hasYOverlap = posYRef.current < 1;
+                const hasYOverlap = posYRef.current < obstacleHeight;
 
                 if (hasXOverlap && hasYOverlap) {
                     setGameState('gameover');
                     playWrong();
+                    // Award final remainder of incremental stars if any
+                    const remainder = Math.floor((scoreRef.current - lastAwardedScoreRef.current) / 100);
+                    if (remainder > 0) addStars(remainder, 'science');
                     return next;
                 }
             }
             return next.filter(obs => obs.x > -150);
         });
 
-        // Spawn Logic - More generous gaps (was 3000, now 3500)
+        // Spawn Logic
         spawnTimerRef.current += delta;
         const spawnInterval = 3500 - (obstacleSpeed * 180);
         if (spawnTimerRef.current > Math.max(1200, spawnInterval)) {
-            const w = 45 + Math.random() * 35; // Slightly smaller obstacles
+            const w = 45 + Math.random() * 35;
             const h = 45 + Math.random() * 35;
             setObstacles(prev => [...prev, { id: Date.now(), x: 900, width: w, height: h }]);
             spawnTimerRef.current = 0;
         }
 
-        setScore(s => s + 1);
-        if (score > 0 && score % 10000 === 0) playPerfect();
+        // Star Spawn Logic
+        collectibleTimerRef.current += delta;
+        if (collectibleTimerRef.current > 2000) {
+            const starY = Math.random() * 150 + 20; // Varied heights
+            setCollectibles(prev => [...prev, { id: Date.now(), x: 900, y: starY }]);
+            collectibleTimerRef.current = 0;
+        }
+
+        // Score Update - award 1 star every 100 UI points (1000 internal points)
+        scoreRef.current += 1;
+        setScore(scoreRef.current);
+        
+        if (scoreRef.current - lastAwardedScoreRef.current >= 1000) {
+            addStars(1, 'science');
+            lastAwardedScoreRef.current = scoreRef.current;
+        }
+
+        if (scoreRef.current > 0 && scoreRef.current % 10000 === 0) playPerfect();
 
         frameRef.current = requestAnimationFrame(update);
     };
@@ -756,6 +812,29 @@ const GravityRunner = () => {
                     >
                         <currentPlanet.ObstacleComponent width={obs.width} height={obs.height} />
                     </div>
+                ))}
+
+                {/* Collectible Stars */}
+                {collectibles.map(item => (
+                    <motion.div
+                        key={item.id}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1, rotate: 360 }}
+                        transition={{ rotate: { duration: 2, repeat: Infinity, ease: "linear" } }}
+                        style={{
+                            position: 'absolute', bottom: `${40 + item.y}px`, left: `${item.x}px`,
+                            width: '30px', height: '30px',
+                            zIndex: 4,
+                            background: 'rgba(245, 158, 11, 0.2)',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 0 15px rgba(245, 158, 11, 0.4)'
+                        }}
+                    >
+                        <Star color="#F59E0B" fill="#F59E0B" size={20} />
+                    </motion.div>
                 ))}
 
                 {/* Scrolling Ground */}

@@ -1,10 +1,26 @@
 import React, { useState } from 'react';
+import { useGamification } from '../context/GamificationContext';
 import { motion } from 'framer-motion';
 import { Calculator, Beaker, BookOpen, Star, Zap, Languages, Rocket, Globe, Book, Trophy, Droplets, Heart, Flower2, Sun, Waves, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const { totalStars, subjectStars, badges, getRankInfo } = useGamification();
+    const currentRank = getRankInfo();
+
+    const getRankColor = (tier) => {
+        const colors = {
+            'Bronze': '#A75A22',
+            'Silver': '#94A3B8',
+            'Gold': '#F59E0B',
+            'Platinum': '#2DD4BF',
+            'Diamond': '#3B82F6',
+            'Master': '#8B5CF6',
+            'Grandmaster': '#EF4444'
+        };
+        return colors[tier] || '#64748B';
+    };
 
     const subjects = [
         {
@@ -70,7 +86,17 @@ const Dashboard = () => {
         "Octopuses have three hearts! 💙💙💙",
         "A shrimp's heart is located in its head! 🦐",
         "Snails can sleep for up to three years! 🐌",
-        "Elephants are the only animals that can't jump! 🐘"
+        "Elephants are the only animals that can't jump! 🐘",
+        "A day on Venus is longer than a year on Venus! Space is weird! 🪐",
+        "Bananas are berries, but strawberries aren't! 🍌🍓",
+        "Clouds might look light, but a single fluffy cloud can weigh over a million pounds! ☁️",
+        "Wombat poop is cube-shaped! It helps it stay in one place. 💩",
+        "Sloths can hold their breath longer than dolphins can! 🦥",
+        "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion! 🗼",
+        "Rats laugh when they are tickled! 🐀",
+        "A cow-bison crossbreed is called a 'Beefalo'! 🐄🦬",
+        "The moon has moonquakes! Just like earthquakes but on the moon. 🌙",
+        "Human teeth are just as strong as shark teeth! 🦷🦈"
     ];
 
     const nextFact = () => {
@@ -178,41 +204,92 @@ const Dashboard = () => {
 
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '30px'
+                gridTemplateColumns: window.innerWidth < 1100 ? '1fr' : '0.8fr 1.2fr',
+                gap: '30px',
+                alignItems: 'stretch'
             }}>
                 {/* My Stars Section */}
                 <div style={{
                     background: 'white',
                     borderRadius: '32px',
                     padding: '24px',
-                    boxShadow: '0 8px 0 #F1F5F9',
-                    border: '2px solid #F8FAFC'
+                    boxShadow: '0 12px 0 #F1F5F9',
+                    border: '2px solid #F8FAFC',
+                    display: 'flex',
+                    flexDirection: 'column'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                        <Trophy color="#F59E0B" size={24} />
-                        <h3 style={{ color: '#1E293B', margin: 0, fontSize: 'var(--fs-lg)' }}>My Stars</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', flexWrap: 'wrap', gap: '15px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <Trophy color="#F59E0B" size={24} />
+                            <h3 style={{ color: '#1E293B', margin: 0, fontSize: 'var(--fs-lg)' }}>My Stars: {totalStars}</h3>
+                        </div>
+                        
+                        {/* Rank Badge */}
+                        <div style={{ 
+                            background: `${getRankColor(currentRank.tier)}15`,
+                            color: getRankColor(currentRank.tier),
+                            padding: '6px 14px',
+                            borderRadius: '16px',
+                            border: `2px solid ${getRankColor(currentRank.tier)}30`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            fontWeight: '900',
+                            fontSize: '14px',
+                            fontFamily: 'Fredoka'
+                        }}>
+                            <Trophy size={16} fill={getRankColor(currentRank.tier)} />
+                            {currentRank.name}
+                        </div>
                     </div>
-                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#FFD93D', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #C29100' }}>
-                                <Star fill="black" size={28} />
-                            </div>
-                            <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Math Star</span>
-                        </div>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 4px 0 #1D4ED8' }}>
-                                <Rocket color="white" size={28} />
-                            </div>
-                            <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Space Ace</span>
-                        </div>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '3px dashed #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
-                                <Star color="#E2E8F0" size={28} />
-                            </div>
-                            <span style={{ fontSize: '10px', color: '#94A3B8' }}>Next...</span>
-                        </div>
+                    
+                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '30px' }}>
+                        {Object.keys(subjectStars).length > 0 ? (
+                            subjects
+                                .filter(s => subjectStars[s.id] > 0)
+                                .map((subject, index) => (
+                                <div key={index} style={{ textAlign: 'center' }}>
+                                    <div style={{ 
+                                        width: '60px', 
+                                        height: '60px', 
+                                        borderRadius: '50%', 
+                                        background: subject.color, 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center', 
+                                        marginBottom: '18px', 
+                                        boxShadow: `0 4px 0 ${subject.accent}`,
+                                        position: 'relative'
+                                    }}>
+                                        {React.cloneElement(subject.icon, { size: 28, color: "white" })}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '-5px',
+                                            right: '-5px',
+                                            background: '#FFD93D',
+                                            color: 'black',
+                                            borderRadius: '50%',
+                                            width: '24px',
+                                            height: '24px',
+                                            fontSize: '10px',
+                                            fontWeight: 'bold',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            border: '2px solid white',
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                        }}>
+                                            {subjectStars[subject.id]}
+                                        </div>
+                                    </div>
+                                    <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#1E293B' }}>{subject.title}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <p style={{ color: '#64748B', fontSize: '14px', textAlign: 'center' }}>Play games to earn stars!</p>
+                        )}
                     </div>
+
                 </div>
 
                 {/* Fun Fact Section */}

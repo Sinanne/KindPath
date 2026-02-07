@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Trophy, Flame, RefreshCcw, Star, Calculator, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const MathMaster = () => {
     const navigate = useNavigate();
+    const { addStars } = useGamification();
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
@@ -86,6 +88,7 @@ const MathMaster = () => {
             setFeedback('correct');
             const newStreak = streak + 1;
             setStreak(newStreak);
+            addStars(10 * digits, 'math');
             if (newStreak > 0 && newStreak % 5 === 0) {
                 playPerfect();
                 setLevel(prev => prev + 1);

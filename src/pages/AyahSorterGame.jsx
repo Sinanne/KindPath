@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Star, Volume2, CheckCircle, RefreshCcw, Book, Play, Pause, List } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const AyahSorterGame = () => {
     const navigate = useNavigate();
+    const { addStars, unlockBadge } = useGamification();
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
@@ -80,7 +82,10 @@ const AyahSorterGame = () => {
         if (isCorrect) {
             playPerfect();
             setIsSuccess(true);
-            setScore(prev => prev + 100);
+            const starsToAward = ayahs.length * 10;
+            setScore(prev => prev + starsToAward);
+            addStars(starsToAward, 'quran');
+            unlockBadge('quran_master', 'Quran Master', '🏆');
         } else {
             playWrong();
         }

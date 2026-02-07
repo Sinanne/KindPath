@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Star, Volume2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const LanguageGame = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { addStars } = useGamification();
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
 
@@ -86,6 +89,11 @@ const LanguageGame = () => {
                 setGameState('success');
                 setScore(s => s + 20);
                 playPerfect();
+                
+                // Award stars based on subject
+                const subject = location.pathname.includes('arabic') ? 'arabic' : 'english';
+                addStars(20, subject);
+
                 clearInterval(spawnTimerRef.current);
                 setTimeout(() => {
                     setCurrentIdx((prev) => (prev + 1) % words.length);

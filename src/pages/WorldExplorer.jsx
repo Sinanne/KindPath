@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Globe, Trophy, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
@@ -106,7 +107,11 @@ const WorldExplorer = () => {
         if (quizIndex + 1 < quizQuestions.length) {
             setTimeout(() => setQuizIndex(quizIndex + 1), 500);
         } else {
-            setTimeout(() => { setStage('results'); playPerfect(); }, 500);
+            setTimeout(() => { 
+                setStage('results'); 
+                playPerfect(); 
+                addStars(score * 10, 'science');
+            }, 500);
         }
     };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useGamification } from '../context/GamificationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Zap, Star, RefreshCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import SOUND_URLS from '../utils/sounds';
 
 const MathGame = () => {
     const navigate = useNavigate();
+    const { addStars, unlockBadge } = useGamification();
     const [playCorrect] = useSound(SOUND_URLS.correct, { volume: 0.4 });
     const [playWrong] = useSound(SOUND_URLS.wrong, { volume: 0.4 });
     const [playPerfect] = useSound(SOUND_URLS.perfect, { volume: 0.4 });
@@ -55,6 +57,13 @@ const MathGame = () => {
             setFeedback('correct');
             setIsCharging(true);
             setScore(s => s + 10);
+            addStars(10, 'math'); // Award global stars to math category
+            
+            // Unlock Math Star badge if they hit a milestone (optional but fun)
+            if (score + 10 === 50) {
+                unlockBadge('math_master', 'Math Star', 'Calculator');
+            }
+
             if ((score + 10) % 50 === 0) playPerfect();
             setTimeout(() => generateGame(), 1500);
         } else {

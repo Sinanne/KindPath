@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useGamification } from '../context/GamificationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Rocket, Info, CheckCircle, HelpCircle, ZoomIn, ZoomOut, X, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import SOUND_URLS from '../utils/sounds';
 
 const Planets = () => {
     const navigate = useNavigate();
+    const { addStars, unlockBadge } = useGamification();
     const [selectedPlanetId, setSelectedPlanetId] = useState(null);
     const [showQuiz, setShowQuiz] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -93,6 +95,7 @@ const Planets = () => {
         } else {
             playPerfect();
             setQuizFinished(true);
+            addStars(score * 10, 'science'); // Award science stars
         }
     };
 

@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, CheckCircle, Volume2, Book, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGamification } from '../context/GamificationContext';
 import useSound from 'use-sound';
 import SOUND_URLS from '../utils/sounds';
 
 const EnglishJourney = () => {
     const navigate = useNavigate();
+    const { addStars } = useGamification();
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [userInput, setUserInput] = useState('');
     const [isCorrect, setIsCorrect] = useState(null);
@@ -58,6 +60,7 @@ const EnglishJourney = () => {
                     } else {
                         playPerfect();
                         setFinished(true);
+                        addStars(50, 'english');
                     }
                 }, 1500);
             } else if (nextInput.length === currentWord.word.length) {
